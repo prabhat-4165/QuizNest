@@ -1,22 +1,29 @@
-//import './App.css';
-// import { Route, Routes } from "react-router-dom";
-import {Signup, Login} from "./Pages";
-// import Leaderboard from "./Pages/Leaderboard.js";
-import 'bootstrap/dist/css/bootstrap.min.css'
- import { Routes, Route, BrowserRouter} from "react-router-dom"
-import Home from "./Pages/Home";
-import Leaderboard from "./Pages/Leaderboard";
-import Result from "./Pages/Result";
+import './App.css';
+import Home from './Components/LandingPage/Home';
+// import 'bootstrap/dist/css/bootstrap.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Login from './Components/LoginSignup/Login';
+import Register from './Components/LoginSignup/Register';
+import HomeNew from './Components/LandingPage/HomeNew';
+import About from './Components/LandingPage/About';
+import Contact from './Components/LandingPage/Contact';
+import LoginContextProvider from './Context/LoginContextProvider';
 
 function App() {
+  // const [currentForm,serCurrentForm]=useState('login');
   return (
-    <Routes>
-       <Route path="/" element={<Home />}/>
-       <Route path="/Login" element={<Login />}/>
-       <Route path="/signup" element={<Signup />}/>
-       <Route path="/Leaderboard" element={<Leaderboard />}/>
-       <Route path="/Result" element={<Result />}/>
-    </Routes>
+    // <AdminDash />
+    <LoginContextProvider>
+    <Router>
+      <Routes>
+        <Route index path='/' element={<HomeNew />}></Route>
+        <Route path='/register' element={<Register />}></Route>
+        <Route path='/login' element={<Login />}></Route>
+        <Route path='/about' element={<About />}></Route>
+        <Route path='/contact' element={<Contact />}></Route>
+      </Routes>
+    </Router>
+    </LoginContextProvider>
   );
 }
 
