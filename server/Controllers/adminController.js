@@ -1,9 +1,7 @@
 const User = require('../Models/User.js')
 const Admin = require('../Models/Admin.js')
+const Quiz = require('../Models/Quiz.js')
 
-// import Admin from "../model/Admin.js";
-// import Quiz from "../model/Quiz.js";
-// import User from "../model/User.js";
 // import Result from "../model/Result.js";
 const mongoose = require("mongoose");
 
@@ -73,158 +71,165 @@ const mongoose = require("mongoose");
   }
 };
 
-module.exports = {
-   addAdmin, 
-   getAdmin
+
+
+  const publishResult = async (req, res) => {
+   try {
+     const { adminId, userIds, quizId } = req.body;
+    const admin = await Admin.findById(adminId);
+    if (!admin) {
+      return res.json({ status: 422, message: "Admin not found" });
+    }
+    console.log(adminId,userIds,quizId);
+    const quizInAdmin = admin.createdQuizes.find(
+      (q) => q._id.toString() === quizId
+    );
+    if (!quizInAdmin) {
+      return res.json({
+        status: 422,
+        message: "Quiz Not found in admin's created Quiz",
+      });
+    }
+
+    quizInAdmin.isResultPublished = true;
+    await admin.save();
+
+    const resultData = {
+      quiz: quizId,
+      users: [],
+    };
+
+    await Promise.all(
+      userIds.map(async (userData) => {
+        const { userId, isAllowedToViewResult } = userData;
+
+        if (!isAllowedToViewResult) {
+          return;
+        }
+        // Fetch user details
+        const user = await User.findById(userId);
+        if (!user) {
+          console.warn(`User with ID ${userId} not found`);
+          return;
+        }
+
+        // Fetch user's attempted quiz for the specified quizId
+        const attemptedQuiz = user.attemptedQuizes.find(
+          (attemptedQuiz) => attemptedQuiz.quiz.toString() === quizId
+        );
+
+        if (attemptedQuiz) {
+          // Update the result data with user's score and time taken
+          resultData.users.push({
+            userId: new mongoose.Types.ObjectId(userId),
+            score: attemptedQuiz.score,
+            timeTaken: attemptedQuiz.timeTaken,
+          });
+        } else {
+          console.warn(`User with ID ${userId} has not attempted the quiz`);
+        }
+      })
+    );
+
+    const result = new Result(resultData);
+    await result.save();
+
+    quizInAdmin.allowedUsers = resultData.users.map((user) => user.userId);
+
+    await admin.save();
+    return res.json({ status: 201, message: "Result published successfully" });
+  } catch (error) {
+    console.log("Some Error Occured during publishing the result", error);
+  }
 };
 
-// export const publishResult = async (req, res) => {
-//   try {
-//     const { adminId, userIds, quizId } = req.body;
-//     const admin = await Admin.findById(adminId);
-//     if (!admin) {
-//       return res.json({ status: 422, message: "Admin not found" });
-//     }
-//     console.log(adminId,userIds,quizId);
-//     const quizInAdmin = admin.createdQuizes.find(
-//       (q) => q._id.toString() === quizId
-//     );
-//     if (!quizInAdmin) {
-//       return res.json({
-//         status: 422,
-//         message: "Quiz Not found in admin's created Quiz",
-//       });
-//     }
+ const adminUserHistory = async (req, res) => {
+  try {
+    const { quizId } = req.body;
 
-//     quizInAdmin.isResultPublished = true;
-//     await admin.save();
+    const users = await User.find({ "attemptedQuizes.quiz": quizId });
 
-//     const resultData = {
-//       quiz: quizId,
-//       users: [],
-//     };
+    // console.log(users);
+    const results = users
+      .map((user) => {
+        const attemptedQuiz = user.attemptedQuizes.find(
+          (quiz) => quiz.quiz.toString() === quizId
+        );
+        // console.log(attemptedQuiz);
 
-//     await Promise.all(
-//       userIds.map(async (userData) => {
-//         const { userId, isAllowedToViewResult } = userData;
+        if (attemptedQuiz) {
+          const { timeTaken, score } = attemptedQuiz;
+          return { userId: user._id, name: user.name, timeTaken, score };
+        }
+        return null;
+      })
+      .filter((result) => result !== null);
+    // console.log(results)
+    res.json({ status: 201, result: results });
+  } catch (error) {
+    console.log("Some error occured during getting adminUserHistory", error);
+  }
+};
 
-//         if (!isAllowedToViewResult) {
-//           return;
-//         }
-//         // Fetch user details
-//         const user = await User.findById(userId);
-//         if (!user) {
-//           console.warn(`User with ID ${userId} not found`);
-//           return;
-//         }
+ const checkResultPublished = async (req, res) => {
+  try {
+    const { adminId, quizId } = req.body;
 
-//         // Fetch user's attempted quiz for the specified quizId
-//         const attemptedQuiz = user.attemptedQuizes.find(
-//           (attemptedQuiz) => attemptedQuiz.quiz.toString() === quizId
-//         );
+    // Check if the admin exists
+    const admin = await Admin.findById(adminId);
+    if (!admin) {
+      return res.json({ status: 404, message: "Admin not found" });
+    }
 
-//         if (attemptedQuiz) {
-//           // Update the result data with user's score and time taken
-//           resultData.users.push({
-//             userId: new mongoose.Types.ObjectId(userId),
-//             score: attemptedQuiz.score,
-//             timeTaken: attemptedQuiz.timeTaken,
-//           });
-//         } else {
-//           console.warn(`User with ID ${userId} has not attempted the quiz`);
-//         }
-//       })
-//     );
+    // Check if the specified quiz exists in the admin's created quizzes
+    const quiz = admin.createdQuizes.find(
+      (createdQuiz) => createdQuiz._id.toString() === quizId
+    );
 
-//     const result = new Result(resultData);
-//     await result.save();
+    if (!quiz) {
+      return res.json({ status: 404, message: "Quiz not found for the admin" });
+    }
 
-//     quizInAdmin.allowedUsers = resultData.users.map((user) => user.userId);
+    // Check if the result is published
+    const isResultPublished = quiz.isResultPublished;
 
-//     await admin.save();
-//     return res.json({ status: 201, message: "Result published successfully" });
-//   } catch (error) {
-//     console.log("Some Error Occured during publishing the result", error);
-//   }
-// };
+    return res.json({ status: 200, isresultPublished: isResultPublished });
+  } catch (error) {
+    console.log("Some error occured while checking result published",error);
+  }
+};
 
-// export const adminUserHistory = async (req, res) => {
-//   try {
-//     const { quizId } = req.body;
+ const getLeaderBoard = async (req,res) => {
+  try{
+    const { quizId } = req.body;
 
-//     const users = await User.find({ "attemptedQuizes.quiz": quizId });
+    // Check if the quiz exists
+    const quizExists = await Result.findOne({ quiz: quizId });
+    if (!quizExists) {
+      return res.json({ status: 404, message: 'Quiz not found in results' });
+    }
 
-//     // console.log(users);
-//     const results = users
-//       .map((user) => {
-//         const attemptedQuiz = user.attemptedQuizes.find(
-//           (quiz) => quiz.quiz.toString() === quizId
-//         );
-//         // console.log(attemptedQuiz);
+    // Fetch results for the specific quiz
+    const results = await Result.findOne({ quiz: quizId }).populate('users.userId');
+    if (!results) {
+      return res.json({ status: 404, message: 'No results found for the quiz' });
+    }
 
-//         if (attemptedQuiz) {
-//           const { timeTaken, score } = attemptedQuiz;
-//           return { userId: user._id, name: user.name, timeTaken, score };
-//         }
-//         return null;
-//       })
-//       .filter((result) => result !== null);
-//     // console.log(results)
-//     res.json({ status: 201, result: results });
-//   } catch (error) {
-//     console.log("Some error occured during getting adminUserHistory", error);
-//   }
-// };
-// export const checkResultPublished = async (req, res) => {
-//   try {
-//     const { adminId, quizId } = req.body;
+    console.log(results)
+    // Prepare leaderboard data
+    const leaderboard = results.users
+      .sort((a, b) => b.score - a.score);
+    return res.json({status: 201,leaderboard})
+  }catch(error){
+    console.log('Some Error Occured during getting the leaderBoard',error)
+  }
+}
 
-//     // Check if the admin exists
-//     const admin = await Admin.findById(adminId);
-//     if (!admin) {
-//       return res.json({ status: 404, message: "Admin not found" });
-//     }
 
-//     // Check if the specified quiz exists in the admin's created quizzes
-//     const quiz = admin.createdQuizes.find(
-//       (createdQuiz) => createdQuiz._id.toString() === quizId
-//     );
-
-//     if (!quiz) {
-//       return res.json({ status: 404, message: "Quiz not found for the admin" });
-//     }
-
-//     // Check if the result is published
-//     const isResultPublished = quiz.isResultPublished;
-
-//     return res.json({ status: 200, isresultPublished: isResultPublished });
-//   } catch (error) {
-//     console.log("Some error occured while checking result published",error);
-//   }
-// };
-
-// export const getLeaderBoard = async (req,res) => {
-//   try{
-//     const { quizId } = req.body;
-
-//     // Check if the quiz exists
-//     const quizExists = await Result.findOne({ quiz: quizId });
-//     if (!quizExists) {
-//       return res.json({ status: 404, message: 'Quiz not found in results' });
-//     }
-
-//     // Fetch results for the specific quiz
-//     const results = await Result.findOne({ quiz: quizId }).populate('users.userId');
-//     if (!results) {
-//       return res.json({ status: 404, message: 'No results found for the quiz' });
-//     }
-
-//     console.log(results)
-//     // Prepare leaderboard data
-//     const leaderboard = results.users
-//       .sort((a, b) => b.score - a.score);
-//     return res.json({status: 201,leaderboard})
-//   }catch(error){
-//     console.log('Some Error Occured during getting the leaderBoard',error)
-//   }
-// }
+module.exports = {
+  addAdmin, 
+  getAdmin, 
+  // publishResult, 
+  adminUserHistory, 
+  getLeaderBoard
+};
