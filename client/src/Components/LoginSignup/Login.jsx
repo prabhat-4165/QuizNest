@@ -54,7 +54,7 @@ const Login = (props) => {
         setloginId({userId: response.data.userInfo._id, userName: response.data.userInfo.name, userEmail: response.data.userInfo.email, quizIds: response.data.userInfo.attemptedQuizes}) 
         // console.log('here is data recieved',response)
 
-        // navigate('/user')
+         navigate('/user')
          window.alert("User Login successfully");
       } catch (error) {
         setisError(true);
@@ -91,7 +91,7 @@ const Login = (props) => {
           return ;
         } 
         setloginId({adminId: response.data.adminId, adminName: response.data.adminName, adminEmail: response.data.adminEmail, quizIds: response.data.quizIds});
-        // navigate('/admin');
+         navigate('/admin');
         console.log("user logged in successfully");
         window.alert("Admin Login successfully");
       } catch (error) {
