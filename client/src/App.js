@@ -9,18 +9,18 @@ import About from './Components/LandingPage/About';
 import Contact from './Components/LandingPage/Contact';
 import LoginContextProvider from './Context/LoginContextProvider';
 import UserQuizContextProvider from './Context/UserQuizContextProvider';
-import QuizContextProvider from './Context/QuizContextProvider';
 import CreateQuiz from './Components/QuizCreation/CreateQuiz';
 import QuizContextProvider from './Context/QuizContextProvider';
 import UserDash from './Components/UserDashboard/UserDash';
 import AdminQuizDetail from './Components/AdminDashboard/AdminQuizDetail';
+import AdminDash from './Components/AdminDashboard/AdminDash';
 import Instruction from './Components/UserDashboard/Instruction';
 import QuizTest from './Components/UserQuiz/QuizTest';
 import Submitted from './Components/UserQuiz/Submitted';
 import Result from './Components/Results/Result';
 import Leaderboard from './Components/Results/Leaderboard';
-import About from './Components/LandingPage/About';
-import Contact from './Components/LandingPage/Contact';
+
+
 
 function App() {
   // const [currentForm,serCurrentForm]=useState('login');
@@ -31,6 +31,7 @@ function App() {
       <Routes>
         <Route index path='/' element={<HomeNew />}></Route>
         <Route path='/register' element={<Register />}></Route>
+        <Route path='/admin' element={<AdminDash/>}></Route>
         <Route path='/login' element={<Login />}></Route>
         <Route path='/about' element={<About />}></Route>
         <Route path='/contact' element={<Contact />}></Route>
