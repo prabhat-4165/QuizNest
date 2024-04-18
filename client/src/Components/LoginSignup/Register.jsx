@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../LandingPage/Header";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+
 // import BannerBackground from "./home-banner-background.png";
 const Register = (props) => {
   const [email, setEmail] = useState("");
@@ -12,16 +14,18 @@ const Register = (props) => {
   const [isError, setisError] = useState(false);
   const [error, setError] = useState("Some Error Occured!")
 
+  const navigate = useNavigate()
+
   const handleSubmit = async (e) => {
+
     e.preventDefault();
     if (role === "user") {
       setisError(false);
       if (!name || !email || !pass) {
-        setError("Some Fields are Missing!")
+        setError("Something is Missing!")
         setisError(true);
         return ;
       }
-
       try {
         const response = await axios.post(
           "http://localhost:8000/register-user",
@@ -43,10 +47,14 @@ const Register = (props) => {
         if (response.data.error === "User already Exist") {
           setError(response.data.error);
         } 
-        else if (response.data.error === "Already registered as Admin"){
+        else if (response.data.error === "Already you registered as Admin"){
             console.log(response.data.error);
             setError(response.data.error);
-        } else window.alert("Registered successfully");
+        } else{
+          window.alert("Registered successfully");
+          navigate('/login')
+            // can we use navigate here
+        }
       } catch (error) {
         setisError(true);
       }
@@ -73,7 +81,10 @@ const Register = (props) => {
         }
         if (response.data.error === "Admin already Exist") {
           window.alert("Admin already Exist");
-        } else window.alert("Registered successfully");
+        } else{
+          navigate('/login')
+          window.alert("Registered successfully");
+        }
       } catch (error) {
         setisError(true);
         console.log(error);
@@ -110,7 +121,7 @@ const Register = (props) => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   type="email"
-                  placeholder="youremail@gmail.com"
+                  placeholder="Email"
                   id="email"
                   name="email"
                 />
@@ -122,7 +133,7 @@ const Register = (props) => {
                   value={pass}
                   onChange={(e) => setPass(e.target.value)}
                   type="password"
-                  placeholder="********"
+                  // placeholder="********"
                   id="password"
                   name="password"
                 />
@@ -173,5 +184,7 @@ const Register = (props) => {
     </div>
   );
 };
+
+// done p
 
 export default Register;
