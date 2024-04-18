@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import Header from "./Header";
+import Header from "../LandingPage/Header";
 import { Link, useNavigate } from "react-router-dom";
 // import "./AdminDash.css";
 // import BannerBackground from "./home-banner-background.png";
@@ -8,6 +8,8 @@ import axios from "axios";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Login from "../LoginSignup/Login";
+
+
 const AdminDash = () => {
   const [quizDetail, setQuizDetail] = useState([]);
   const navigate = useNavigate();
@@ -16,9 +18,6 @@ const AdminDash = () => {
   console.log('Login ID on page load:', loginId);
 
   useEffect(() => {
-
-    
-
     if (loginId && loginId.quizIds) {
       getHistory();
       
@@ -75,7 +74,7 @@ const AdminDash = () => {
         {loginId?(<div className="admin-main">
           <Header />
            <div className="home-bannerImage-container">
-          <img src={BannerBackground} alt="" />
+          {/* <img src={BannerBackground} alt="" /> */}
         </div>
           <div className="admin-info">
             <h1 className="user-head">Welcome to Dashboard</h1>   
@@ -88,9 +87,9 @@ const AdminDash = () => {
             <button type="button" className="btn btn-primary1" onClick={()=>navigate('/custom-quiz')}>
               Create New Quizz
             </button>
-            <button type="button" className="btn btn-primary1" onClick={()=>navigate('/random-quiz')}>
+            {/* <button type="button" className="btn btn-primary1" onClick={()=>navigate('/random-quiz')}>
               Create Random Quizz
-            </button>
+            </button> */}
           </div>
           </div>
           {/* <hr /> */}
@@ -135,7 +134,7 @@ const AdminDash = () => {
                 
                 
               </tbody>
-            </table>):(<div>No Quiz History</div>)}
+            </table>):(<div>No Quiz Found</div>)}
             
           </div>
         </div>

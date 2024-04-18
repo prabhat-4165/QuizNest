@@ -7,6 +7,7 @@ import Login from "../LoginSignup/Login";
 import axios from "axios";
 
 const AdminQuizDetail = () => {
+
   const location = useLocation();
   const { detail } = location.state || {};
   const [isResultPublished, setisResultPublished] = useState(false);
@@ -23,7 +24,6 @@ const AdminQuizDetail = () => {
     const newCheckedState = [...isChecked];
     newCheckedState[index] = !newCheckedState[index];
     setIsChecked(newCheckedState);
-    // console.log(userIds);
   };
 
   const getHistory = async () => {
@@ -95,7 +95,7 @@ const AdminQuizDetail = () => {
         <div className="main-detail">
           <Header />
           <div className="home-bannerImage-container">
-            <img src={BannerBackground} alt="" />
+            {/* <img src={BannerBackground} alt="" /> */}
           </div>
           <div className="quiz-detail">
             <div className="details">
