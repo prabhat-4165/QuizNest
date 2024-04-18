@@ -1,11 +1,10 @@
 const Connection = require("../Database/db.js");
-const User = require('../Models/User.js')
-const Admin = require('../Models/Admin.js')
-// import User from "../model/User.js";
-// import Admin from "../model/Admin.js";
-// import Quiz from "../model/Quiz.js";
+const User = require('../Models/User.js');
+const Admin = require('../Models/Admin.js');
+const Quiz = require('../Models/Quiz.js');
 const mongoose = require("mongoose");
-// import Result from "../model/Result.js";
+const Result = require("../Models/Result.js");
+
 
  const addUser = async (req, res) => {
    try {
@@ -65,141 +64,147 @@ const mongoose = require("mongoose");
   }
 };
 
-module.exports = {
-    addUser,
-    getUser
+
+
+
+ const saveUserResponse = async (req, res) => {
+  try {
+    const { userId, quizId, markedOptions, timeTaken } = req.body;
+    console.log('Req.body...    ',req.body);
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.json({ status: 422, message: "User Not find" });
+    }
+    // const isQuizAttempted = await User.findOne({
+    //   "attemptedQuizes.quiz": quizId,
+    // });
+    // if (isQuizAttempted) {
+    //   return res.json({
+    //     status: 422,
+    //     message: "User had already attempted quiz",
+    //   });
+    // }
+    const quiz = await Quiz.findById(quizId);
+    if (!quiz) {
+      return res.json({ status: 422, message: "quiz not found" });
+    }
+    const userIdObject = new mongoose.Types.ObjectId(userId);
+    // const haveUserAttempted = await Quiz.findOne({ attemptedBy: userIdObject });
+    // if (haveUserAttempted) {
+    //   return res.json({ status: 422, message: "User have already attempted" });
+    // }
+    quiz.attemptedBy.push(userIdObject);
+    const updatedQuiz = await quiz.save();
+    console.log(updatedQuiz);
+
+    const markedOptionsWithObjectId = markedOptions.map(option => ({
+        question: new mongoose.Types.ObjectId(option.question),
+        selectedOption: option.selectedOption
+    }));
+
+    user.attemptedQuizes.push({
+      quiz: quizId,
+      markedOptions: markedOptionsWithObjectId,
+      timeTaken: timeTaken,
+    });
+    const updatedUser = await user.save();
+    return res.json({ updatedUser });
+  } catch (error) {
+    console.log("Some Error occured during saving response", error);
+  }
 };
 
 
-// export const saveUserResponse = async (req, res) => {
-//   try {
-//     const { userId, quizId, markedOptions, timeTaken } = req.body;
-//     console.log('Req.body...    ',req.body);
-//     const user = await User.findById(userId);
-//     if (!user) {
-//       return res.json({ status: 422, message: "User Not find" });
-//     }
-//     // const isQuizAttempted = await User.findOne({
-//     //   "attemptedQuizes.quiz": quizId,
-//     // });
-//     // if (isQuizAttempted) {
-//     //   return res.json({
-//     //     status: 422,
-//     //     message: "User had already attempted quiz",
-//     //   });
-//     // }
-//     const quiz = await Quiz.findById(quizId);
-//     if (!quiz) {
-//       return res.json({ status: 422, message: "quiz not found" });
-//     }
-//     const userIdObject = new mongoose.Types.ObjectId(userId);
-//     // const haveUserAttempted = await Quiz.findOne({ attemptedBy: userIdObject });
-//     // if (haveUserAttempted) {
-//     //   return res.json({ status: 422, message: "User have already attempted" });
-//     // }
-//     quiz.attemptedBy.push(userIdObject);
-//     const updatedQuiz = await quiz.save();
-//     console.log(updatedQuiz);
+const getUserHistory = async (req,res) => {
+  try{
+    const {userId} = req.body;
 
-//     const markedOptionsWithObjectId = markedOptions.map(option => ({
-//         question: new mongoose.Types.ObjectId(option.question),
-//         selectedOption: option.selectedOption
-//     }));
+    const user = await User.findById(userId);
+    if(!user){
+      return res.json({status: 422, message: "User not found"});
+    }
 
-//     user.attemptedQuizes.push({
-//       quiz: quizId,
-//       markedOptions: markedOptionsWithObjectId,
-//       timeTaken: timeTaken,
-//     });
-//     const updatedUser = await user.save();
-//     return res.json({ updatedUser });
-//   } catch (error) {
-//     console.log("Some Error occured during saving response", error);
-//   }
-// };
+    const attemptedQuizes = user.attemptedQuizes;
+    console.log(attemptedQuizes);
+    const userHistory = await Promise.all(
+      attemptedQuizes.map(async (attemptedQuiz) => {
+        const quizId = attemptedQuiz.quiz;
+        const quiz = await Quiz.findById(quizId);
+        // const admin = quiz.createdBy;
+        const isResultPublished = await Result.findOne({
+          quiz: quizId,
+          'users.userId': userId,
+        });
 
-// export const getUserHistory = async (req,res) => {
-//   try{
-//     const {userId} = req.body;
+        return {
+          quizId: quiz._id,
+          quizName: quiz.name,
+          score: isResultPublished ? attemptedQuiz.score : 'Not available',
+          duration: quiz.duration
+        };
+      })
+    );
 
-//     const user = await User.findById(userId);
-//     if(!user){
-//       return res.json({status: 422, message: "User not found"});
-//     }
+    return res.json({status: 201, userHistory});
+  }catch(error){
+    console.log('Some error Occured during getting user history',error)
+  }
+}
 
-//     const attemptedQuizes = user.attemptedQuizes;
-//     console.log(attemptedQuizes);
-//     const userHistory = await Promise.all(
-//       attemptedQuizes.map(async (attemptedQuiz) => {
-//         const quizId = attemptedQuiz.quiz;
-//         const quiz = await Quiz.findById(quizId);
-//         // const admin = quiz.createdBy;
-//         const isResultPublished = await Result.findOne({
-//           quiz: quizId,
-//           'users.userId': userId,
-//         });
+const getResult = async (req,res) => {
+  try {
+    const { userId, quizId } = req.body;
 
-//         return {
-//           quizId: quiz._id,
-//           quizName: quiz.name,
-//           score: isResultPublished ? attemptedQuiz.score : 'Not available',
-//           duration: quiz.duration
-//         };
-//       })
-//     );
+    // Check if the user exists
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.json({ status: 404, message: 'User not found' });
+    }
 
-//     return res.json({status: 201, userHistory});
-//   }catch(error){
-//     console.log('Some error Occured during getting user history',error)
-//   }
-// }
+    // Check if the quiz exists
+    const quiz = await Quiz.findById(quizId).populate('questions');
+    if (!quiz) {
+      return res.json({ status: 404, message: 'Quiz not found' });
+    }
 
-// export const getResult = async (req,res) => {
-//   try {
-//     const { userId, quizId } = req.body;
+    // Find the attempted quiz by the user
+    const attemptedQuiz = user.attemptedQuizes.find(
+      (attemptedQuiz) => attemptedQuiz.quiz.toString() === quizId
+    );
 
-//     // Check if the user exists
-//     const user = await User.findById(userId);
-//     if (!user) {
-//       return res.json({ status: 404, message: 'User not found' });
-//     }
+    if (!attemptedQuiz) {
+      return res.json({ status: 404, message: 'User has not attempted this quiz' });
+    }
 
-//     // Check if the quiz exists
-//     const quiz = await Quiz.findById(quizId).populate('questions');
-//     if (!quiz) {
-//       return res.json({ status: 404, message: 'Quiz not found' });
-//     }
+    // Extract marked options from the attempted quiz
+    const markedOptions = attemptedQuiz.markedOptions || [];
 
-//     // Find the attempted quiz by the user
-//     const attemptedQuiz = user.attemptedQuizes.find(
-//       (attemptedQuiz) => attemptedQuiz.quiz.toString() === quizId
-//     );
+    // Prepare the response data
+    const quizDetails = quiz.questions.map((question) => {
+      const userSelectedOption = markedOptions.find(
+        (option) => option.question.toString() === question._id.toString()
+      );
 
-//     if (!attemptedQuiz) {
-//       return res.json({ status: 404, message: 'User has not attempted this quiz' });
-//     }
+      return {
+        question: question.questionText,
+        options: question.options,
+        correctAnswer: question.correctAnswer,
+        userSelectedOption: userSelectedOption ? userSelectedOption.selectedOption : null,
+        score: attemptedQuiz.score
+      };
+    });
 
-//     // Extract marked options from the attempted quiz
-//     const markedOptions = attemptedQuiz.markedOptions || [];
+    return res.json({ status: 200, quizDetails });
+  } catch (error) {
+    console.error('Error getting user quiz details:', error);
+    return res.status(500).json({ status: 500, message: 'Internal Server Error' });
+  }
+}
 
-//     // Prepare the response data
-//     const quizDetails = quiz.questions.map((question) => {
-//       const userSelectedOption = markedOptions.find(
-//         (option) => option.question.toString() === question._id.toString()
-//       );
-
-//       return {
-//         question: question.questionText,
-//         options: question.options,
-//         correctAnswer: question.correctAnswer,
-//         userSelectedOption: userSelectedOption ? userSelectedOption.selectedOption : null,
-//         score: attemptedQuiz.score
-//       };
-//     });
-
-//     return res.json({ status: 200, quizDetails });
-//   } catch (error) {
-//     console.error('Error getting user quiz details:', error);
-//     return res.status(500).json({ status: 500, message: 'Internal Server Error' });
-//   }
-// }
+module.exports = {
+  addUser,
+  getUser,
+  saveUserResponse,
+  getUserHistory,
+  getResult
+};

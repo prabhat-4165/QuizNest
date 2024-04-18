@@ -1,9 +1,11 @@
 const User = require('../Models/User.js')
 const Admin = require('../Models/Admin.js')
 const Quiz = require('../Models/Quiz.js')
+const Result = require('../Models/Result.js')
+const  mongoose = require('mongoose');
 
 // import Result from "../model/Result.js";
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 
  const addAdmin = async (req, res) => {
   try {
@@ -229,7 +231,8 @@ const mongoose = require("mongoose");
 module.exports = {
   addAdmin, 
   getAdmin, 
-  // publishResult, 
+  publishResult, 
   adminUserHistory, 
-  getLeaderBoard
+  getLeaderBoard, 
+  checkResultPublished
 };
