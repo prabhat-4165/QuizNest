@@ -1,15 +1,17 @@
 import React, { useContext, useState, useRef, useCallback } from "react";
-import Header from "../Header.jsx";
+import Header from "../LandingPage/Header.js";
 import Forms from "./Forms.jsx";
 // import BannerBackground from "./home-banner-background.png";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 // import "./CustomQuizz.css";
 import { IconButton } from "@mui/material";
-import QuizContext from "./context/QuizContext.js";
+// import QuizContext from "./context/QuizContext.js";
+import QuizContext from "../../Context/QuizContext.js";
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import axios from "axios";
 import LoginContext from "../../Context/LoginContext.js";
 import Login from "../LoginSignup/Login.jsx";
+
 const CreateQuiz = () => {
   const [isCreated, setisCreated] = useState(false);
   const [isgetCode, setisgetCode] = useState(false);
@@ -43,31 +45,7 @@ const CreateQuiz = () => {
   }
 
   const createQuiz = async() => {
-    // console.log(form.questions[0].questionText);
-    // const optionss = form.questions.map((ques,i)=>(ques.options.map((op,j)=>op.optionText)))
-    // console.log(optionss)
-    // const response ={
-    //       name: name,
-    //       description: desc,
-    //       dateCreated: new Date(),
-    //       startTime: startTime,
-    //       endTime: endTime,
-    //       duration: duration,
-    //       createdBy: adminId,
-    //       attemptedBy: usersId,
-    //       questions: form.questions.map((ques,i)=>(
-    //         {
-    //           questionText: ques.questionText,
-    //           questionType: ques.questionType,
-    //           options: ques.options.map((op,j)=>op.optionText),
-    //           correctAnswer: ques.questionType === 'multiple-choice' || ques.questionType === 'radio' ? ques.answerKey : "",
-    //           marks: ques.points
-    //         }
-    //       ))
-    //     }
-
-    //     console.log(response);
-    // console.log(loginId);
+    
     if(!name || !startTime || !endTime || !duration){
     window.alert('Some fields are missing');
     return ;
@@ -110,7 +88,7 @@ const CreateQuiz = () => {
       {loginId ? (<div>
       <Header />
       <div className="home-bannerImage-container">
-          <img src={BannerBackground} alt="" />
+          {/* <img src={BannerBackground} alt="" /> */}
         </div>
       <div className="custom-mid" >
         <div className="custom-head">

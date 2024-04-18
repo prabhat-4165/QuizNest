@@ -6,17 +6,21 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import QuizContext from "../context/QuizContext";
+// import QuizContext from "../context/QuizContext";
+import QuizContext from "../../Context/QuizContext";
+ 
+// this component for save question in quiz 
+
 const Forms = () => {
   const [questions, setQuestions] = useState([
     {
-      questionText: "What is your Question No. 1?",
+      questionText: "Question ?",
       questionType: "multiple-choice",
       options: [
-        { optionText: "My First Option" },
-        { optionText: "My Second Option" },
-        { optionText: "My Third Option" },
-        { optionText: "My Fourth Option" },
+        { optionText: "Option 1" },
+        { optionText: "Option 2" },
+        { optionText: "Option 3" },
+        { optionText: "Option 4" },
       ],
       answer: false,
       answerKey: "",
@@ -314,5 +318,6 @@ const Forms = () => {
     </div>
   );
 };
+// done p
 
 export default Forms;
