@@ -1,13 +1,12 @@
 const mongoose = require("mongoose");
-const {Schema} = require("mongoose");
-// import Admin from "./Admin.js";
-// import User from "./User.js";
+const { Schema } = require("mongoose");
+
+const User = require("./User.js");
+const Question = require("./Question.js");
+
 
 const quizSchema = mongoose.Schema({
-  // id: {
-  //     type: String,
-  //     required: true
-  // },
+ 
   name: {
     type: String,
     required: true,

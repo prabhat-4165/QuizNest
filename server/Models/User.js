@@ -1,5 +1,10 @@
 const mongoose = require("mongoose");
-// import Quiz from "./Quiz.js";
+const Quiz = require('./Quiz.js');
+
+const { Schema } = require("mongoose");
+
+const Question = require("./Question.js");
+
 
 const userSchema = mongoose.Schema({
   name: {
@@ -14,34 +19,34 @@ const userSchema = mongoose.Schema({
   password: {
     type: String,
     required: true,
-  }
-//   attemptedQuizes: [
-//     {
-//       quiz: {
-//         type: mongoose.Schema.Types.ObjectId,
-//         ref: 'Quiz',
-//       },
-//       markedOptions: [
-//         {
-//           question: {
-//             type: mongoose.Schema.Types.ObjectId,
-//             ref: 'Question',
-//           },
-//           selectedOption: {
-//             type: String,
-//           }
-//         }
-//       ],
-//       timeTaken: {
-//         type: Number,
-//         default: 0
-//       },
-//       score: {
-//         type: Number,
-//         default: 0
-//       }
-//     }
-//   ]
+  },
+  attemptedQuizes: [
+    {
+      quiz: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Quiz',
+      },
+      markedOptions: [
+        {
+          question: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Question',
+          },
+          selectedOption: {
+            type: String,
+          }
+        }
+      ],
+      timeTaken: {
+        type: Number,
+        default: 0
+      },
+      score: {
+        type: Number,
+        default: 0
+      }
+    }
+  ]
 });
 
 const User = mongoose.model("User", userSchema);
