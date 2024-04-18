@@ -1,12 +1,13 @@
-// this file will contain the code 
-//  when the quiz is complete you need to back 
-
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
- const Submitted = () => {
-  return (
-    <div>Submitted</div>
+const Submitted = () => {
+  const navigate = useNavigate();
+    return (
+    <div>Submitted
+        <button onClick={()=>navigate('/user')}>Go Back</button>
+    </div>
   )
 }
-
-export default Submitted;
+//  done p
+export default Submitted
