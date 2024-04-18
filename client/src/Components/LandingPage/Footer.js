@@ -1,8 +1,17 @@
-import React from 'react'
+import React from "react";
+import { BsTwitter } from "react-icons/bs";
+import { SiLinkedin } from "react-icons/si";
+import { BsYoutube } from "react-icons/bs";
+import { FaFacebookF } from "react-icons/fa";
 
- const Footer = () => {
+const Footer = () => {
   return (
-    <div>Footer</div>
-  )
-}
+    <>
+    
+
+    </>
+  );
+};
+
+// done p
 export default Footer;

@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import { BsFillPlayCircleFill } from "react-icons/bs";
 
- const About = () => {
+const About = () => {
   return (
-    <div>About</div>
-  )
-}
-
+    <>
+      
+    </>
+  );
+};
+// done p
 export default About;
