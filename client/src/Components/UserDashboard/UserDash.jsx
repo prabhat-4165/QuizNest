@@ -72,7 +72,7 @@ const Quizcode = () => {
     <div>
       {loginId ? (
         <div>
-          <Header />
+          {/* <Header /> */}
           <div>Welcome {loginId.userName}</div>
           <div className="verification-container">
             <div className="codeheader">

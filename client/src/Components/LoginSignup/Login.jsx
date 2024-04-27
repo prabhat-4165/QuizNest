@@ -18,6 +18,8 @@ const Login = (props) => {
 
   const {setloginId} = useContext(LoginContext);
 
+
+
   const check = async (e) => {
     e.preventDefault();
     if (role === "user") {
@@ -101,92 +103,77 @@ const Login = (props) => {
     }
   };
 
+
   return (
-    <div>
-      <Header />
-      <div>
-      
-     
-      <div className="body">
-      <div className="home-bannerImage-container">
-          {/* <img src={BannerBackground} alt="" /> */}
-        </div>
-        <div className="auth-form-container">
-          
-          <div style={{ marginBottom: "30px" }}>
-            <h2>Login</h2>
-          </div>
-          <div className="forms">
-            <form className="register-form">
-              <div className="input-field">
-                <label htmlFor="email">Email</label>
-                <input
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  type="email"
-                  placeholder="youremail@gmail.com"
-                  id="email"
-                  name="email"
-                />
-              </div>
-
-              <div className="input-field">
-                <label htmlFor="password">Password</label>
-                <input
-                  value={pass}
-                  onChange={(e) => setPass(e.target.value)}
-                  type="password"
-                  placeholder="********"
-                  id="password"
-                  name="password"
-                />
-              </div>
-
-              <div className="input-field">
-                <label htmlFor="role" style={{ marginRight: "55px" }}>
-                  Role
-                </label>
-                <select
-                  style={{ marginRight: "auto" }}
-                  className="drop"
-                  id="role"
-                  name="role"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                >
-                  <option value="user">User</option>
-                  <option value="admin">Admin</option>
-                </select>
-              </div>
-
-              <button
-                style={{ marginTop: "30px" }}
-                className="button-30"
-                role="button"
-                onClick={check}
-              >
-                Login
-              </button>
-              {isError ? (
-                <div className="error" style={{ marginTop: "20px" }}>
-                  <span style={{ color: "red" }}>{error}</span>
+    <div className="container mt-5 mb-5">
+        <div className="row justify-content-center">
+          <div className="col-lg-5 col-md-6 col-sm-7">
+            <div className="card p-3" style={{ backgroundColor: "#f8f9fa" }}>
+              <h2 className="text-center mb-4">Login</h2>
+              <form onSubmit={check}>
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label">
+                    Email
+                  </label>
+                  <input
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    type="email"
+                    className="form-control"
+                    id="email"
+                    placeholder="youremail@gmail.com"
+                    name="email"
+                  />
                 </div>
-              ) : (
-                ""
-              )}
-            </form>
-          </div>
-          <div style={{ marginTop: "30px", color: "#22092c" }}>
-            <Link to={"/register"}>
-              <span style={{ color: "#22092c" }}>
-                Don't have an account? Register here.
-              </span>
-            </Link>
+                <div className="mb-3">
+                  <label htmlFor="password" className="form-label">
+                    Password
+                  </label>
+                  <input
+                    value={pass}
+                    onChange={(e) => setPass(e.target.value)}
+                    type="password"
+                    className="form-control"
+                    id="password"
+                    placeholder="********"
+                    name="password"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="role" className="form-label">
+                    Role
+                  </label>
+                  <select
+                    className="form-select"
+                    id="role"
+                    name="role"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                  >
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+                <div className="mb-3 text-center">
+                  <button type="submit" className="btn btn-primary">
+                    Login
+                  </button>
+                </div>
+                {isError && (
+                  <div className="alert alert-danger" role="alert">
+                    {error}
+                  </div>
+                )}
+              </form>
+              <div className="text-center">
+                <Link to={"/register"} className="text-decoration-none">
+                  Don't have an account? Register Here
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    </div>
   );
 };
 // done p

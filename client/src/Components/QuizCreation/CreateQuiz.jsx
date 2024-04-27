@@ -86,7 +86,7 @@ const CreateQuiz = () => {
   return (
     <div>
       {loginId ? (<div>
-      <Header />
+      
       <div className="home-bannerImage-container">
           {/* <img src={BannerBackground} alt="" /> */}
         </div>
@@ -94,11 +94,11 @@ const CreateQuiz = () => {
         <div className="custom-head">
           <div className="one">
             <div className="input1">
-              <label>Name </label>
+              <label>Title </label>
               <input
                 className="inp"
                 type="text"
-                placeholder="Name of Quizz"
+                placeholder="Name of Quiz"
                 required
                 onChange={(event) => setName(event.target.value)}
               />
@@ -106,7 +106,7 @@ const CreateQuiz = () => {
               <label>Description</label>
               <input
                 type="text"
-                placeholder="Description of Quizz"
+                placeholder="Description of Quiz"
                 onChange={(event) => setDesc(event.target.value)}
               />
             </div>
@@ -136,7 +136,7 @@ const CreateQuiz = () => {
                 className="inp"
                 type="number"
                 min="0"
-                placeholder="Duration of Quizz"
+                placeholder="Duration of Quiz"
                 required
                 onChange={(event) => setduration(event.target.value)}
               />
@@ -145,7 +145,7 @@ const CreateQuiz = () => {
         </div>
       </div>
 
-      <Forms />
+       <Forms /> {/* question card  */}
 
       <div className="custom-final" >
         <div>

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../LandingPage/Header";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 // import BannerBackground from "./home-banner-background.png";
 const Register = (props) => {
@@ -12,19 +12,18 @@ const Register = (props) => {
   const [name, setName] = useState("");
   const [role, setRole] = useState("user"); // default role
   const [isError, setisError] = useState(false);
-  const [error, setError] = useState("Some Error Occured!")
+  const [error, setError] = useState("Some Error Occured!");
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
     if (role === "user") {
       setisError(false);
       if (!name || !email || !pass) {
-        setError("Something is Missing!")
+        setError("Something is Missing!");
         setisError(true);
-        return ;
+        return;
       }
       try {
         const response = await axios.post(
@@ -38,22 +37,21 @@ const Register = (props) => {
         console.log(response);
         if (!response) {
           setisError(true);
-          setError("Something went wrong")
+          setError("Something went wrong");
           return;
         } else {
-            setError(response.data.error);
+          setError(response.data.error);
           setisError(false);
         }
         if (response.data.error === "User already Exist") {
           setError(response.data.error);
-        } 
-        else if (response.data.error === "Already you registered as Admin"){
-            console.log(response.data.error);
-            setError(response.data.error);
-        } else{
+        } else if (response.data.error === "Already you registered as Admin") {
+          console.log(response.data.error);
+          setError(response.data.error);
+        } else {
           window.alert("Registered successfully");
-          navigate('/login')
-            // can we use navigate here
+          navigate("/login");
+          // can we use navigate here
         }
       } catch (error) {
         setisError(true);
@@ -81,8 +79,8 @@ const Register = (props) => {
         }
         if (response.data.error === "Admin already Exist") {
           window.alert("Admin already Exist");
-        } else{
-          navigate('/login')
+        } else {
+          navigate("/login");
           window.alert("Registered successfully");
         }
       } catch (error) {
@@ -91,63 +89,60 @@ const Register = (props) => {
       }
     }
   };
+
   return (
-    <div>
-      <Header />
-      <div className="body">
-      <div className="home-bannerImage-container">
-          {/* <img src={BannerBackground} alt="" /> */}
-        </div>
-        <div className="auth-form-container">
-          <div style={{ marginBottom: "30px" }}>
-            <h2>Register</h2>
-          </div>
-          <div className="forms">
-            <form className="register-form" onSubmit={handleSubmit}>
-              <div className="input-field">
-                <label htmlFor="name">Full name</label>
+    <div className="container mt-5 mb-5">
+      <div className="row justify-content-center">
+        <div className="col-lg-5 col-md-6 col-sm-7">
+          <div className="card p-3" style={{ backgroundColor: "#f8f9fa" }}>
+            <h2 className="text-center mb-4">Register</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <label htmlFor="name" className="form-label">
+                  Full name
+                </label>
                 <input
                   value={name}
-                  name="name"
                   onChange={(e) => setName(e.target.value)}
+                  type="text"
+                  className="form-control"
                   id="name"
                   placeholder="Full Name"
                 />
               </div>
-
-              <div className="input-field">
-                <label htmlFor="email">Email</label>
+              <div className="mb-3">
+                <label htmlFor="email" className="form-label">
+                  Email
+                </label>
                 <input
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   type="email"
-                  placeholder="Email"
+                  className="form-control"
                   id="email"
-                  name="email"
+                  placeholder="Email"
                 />
               </div>
-
-              <div className="input-field">
-                <label htmlFor="password">Password</label>
+              <div className="mb-3">
+                <label htmlFor="password" className="form-label">
+                  Password
+                </label>
                 <input
                   value={pass}
                   onChange={(e) => setPass(e.target.value)}
                   type="password"
-                  // placeholder="********"
+                  className="form-control"
                   id="password"
-                  name="password"
+                  placeholder="Password"
                 />
               </div>
-
-              <div className="input-field">
-                <label htmlFor="role" style={{ marginRight: "55px" }}>
+              <div className="mb-3">
+                <label htmlFor="role" className="form-label">
                   Role
                 </label>
                 <select
-                  style={{ marginRight: "auto" }}
-                  className="drop"
+                  className="form-select"
                   id="role"
-                  name="role"
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
                 >
@@ -155,29 +150,22 @@ const Register = (props) => {
                   <option value="admin">Admin</option>
                 </select>
               </div>
-
-              <button
-                style={{ marginTop: "30px" }}
-                className="button-30"
-                role="button"
-              >
-                Register
-              </button>
-            </form>
-            {isError ? (
-              <div className="error" style={{marginTop: "20px"}}>
-                <span style={{color: "red"}}>{error}</span>
+              <div className="mb-3 text-center">
+                <button type="submit" className="btn btn-primary">
+                  Register
+                </button>
               </div>
-            ) : (
-              ""
-            )}
-          </div>
-          <div style={{ marginTop: "30px" }}>
-            <Link to={"/login"}>
-              <span style={{ color: "#22092c" }}>
+              {isError && (
+                <div className="alert alert-danger" role="alert">
+                  {error}
+                </div>
+              )}
+            </form>
+            <div className="text-center">
+              <Link to={"/login"} className="text-decoration-none">
                 Already Registered? Login Here
-              </span>
-            </Link>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

@@ -7,23 +7,22 @@ import { Link, useNavigate } from "react-router-dom";
 const Home = () => {
   const navigate = useNavigate();
   return (
-    <div className="home-container">
+    <div>
       <Navbar />
-      <div className="home-banner-container">
-        <div className="home-bannerImage-container">
+      <div >
+        <div >
           {/* <img src={BannerBackground} alt="" /> */}
         </div>
-        <div className="home-text-section">
-          <h1 className="primary-heading1">
-          Welcome to our Quest website!🌟 
+        <div >
+          <h1>
+          Welcome to Quiz website!🌟 
 
           </h1>
-          <p className="primary-text">
-          Dive into a world of quizzes, test your wits, and enjoy the thrill of learning with our engaging quiz app – 
-          your journey to knowledge starts with a single tap!🏆
+          <p>
+          Immerse yourself in the excitement of our quiz platform. Unravel mysteries, unlock knowledge, and experience the joy of learning in a whole new way!🏆
 
           </p>
-          <button className="secondary-button" onClick={()=>{navigate('/register')}}>
+          <button className="d-flex mx-auto btn btn-primary" onClick={()=>{navigate('/register')}}>
            Get Started !{" "}
           </button>
         </div>

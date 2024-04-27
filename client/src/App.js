@@ -19,6 +19,7 @@ import QuizTest from './Components/UserQuiz/QuizTest';
 import Submitted from './Components/UserQuiz/Submitted';
 import Result from './Components/Results/Result';
 import Leaderboard from './Components/Results/Leaderboard';
+import NavBar from './Components/LandingPage/Navbar';
 
 
 
@@ -28,6 +29,7 @@ function App() {
     // <AdminDash />
     <LoginContextProvider>
     <Router>
+      <NavBar />
       <Routes>
         <Route index path='/' element={<HomeNew />}></Route>
         <Route path='/register' element={<Register />}></Route>

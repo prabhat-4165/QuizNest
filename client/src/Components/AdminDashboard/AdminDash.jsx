@@ -72,19 +72,15 @@ const AdminDash = () => {
   return (
       <div>
         {loginId?(<div className="admin-main">
-          <Header />
-           <div className="home-bannerImage-container">
-          {/* <img src={BannerBackground} alt="" /> */}
-        </div>
-          <div className="admin-info">
-            <h1 className="user-head">Welcome to Dashboard</h1>   
-            {/* add {loginId.adminName} after Welcome */}
+          
+          <div className="admin-info  text-center mt-2 mb-4 text-success">
+            <h1 className="user-head">Welcome to Admin Dashboard {loginId.adminName}</h1> 
           </div>
           
-          <div className="admin-btn">
+          <div className="admin-btn text-center mb-4">
             {/* <h1 className="history-head">Custom/Random Quizes</h1> */}
           <div className="admin-btn-grp">
-            <button type="button" className="btn btn-primary1" onClick={()=>navigate('/custom-quiz')}>
+            <button type="button" className="btn btn-primary create-new-quiz" onClick={()=>navigate('/custom-quiz')}>
               Create New Quizz
             </button>
             {/* <button type="button" className="btn btn-primary1" onClick={()=>navigate('/random-quiz')}>
@@ -94,13 +90,14 @@ const AdminDash = () => {
           </div>
           {/* <hr /> */}
           <div className="admin-history">
-            <h1 className="history-head">Your Previous Quizes :</h1>
+            <h1 className="history-head mb-4">Your Previous Quizes :</h1>
             {quizDetail !== undefined?(
             <table
-              className="table"
+              // className="table table-striped table-bordered"
+              className="table table-striped "
               id="table-history"
             >
-              <thead>
+              <thead  >
                 <tr>
                   <th scope="col">S. No.</th>
                   <th scope="col">Title</th>
@@ -114,19 +111,19 @@ const AdminDash = () => {
               <tbody>
                 {
               quizDetail.map((quiz,i)=>(
-                <tr key={i}>
+                <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-light"}>
                   <th scope="row">{i+1}</th>
-                  <td>{quiz.name}</td>
+                  <td style={{ color: 'blue' }}>{quiz.name}</td>
                   <td>{quiz.dateCreated.split('T')[0]}</td>
                   <td>{quiz.duration} mins</td>
                   <td>{quiz.attemptedBy.length}</td>
                   <td>
                     <VisibilityIcon onClick={() => {
                             viewQuiz(i);
-                          }}/>
+                          }} style={{ color: 'green' }} />
                   </td>
                   <td>
-                    <DeleteIcon onClick={()=>{deleteQuiz(i)}}/>
+                    <DeleteIcon onClick={()=>{deleteQuiz(i)}} style={{ color: 'blue' }} />
                   </td>
                 </tr>
               ))
