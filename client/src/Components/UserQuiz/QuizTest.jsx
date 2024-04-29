@@ -5,24 +5,34 @@ import Header from "../LandingPage/Header";
 import { useLocation, useNavigate } from "react-router-dom";
 import UserQuizContext from "../../Context/UserQuizContext";
 import axios from "axios";
+import "../../Styles/QuizTest.css";
+
+
+const startTime = new Date();
+const markedOptions = [];
 
 const QuizTest = () => {
-  const startTime = new Date();
-  const markedOptions = [];
-
   const location = useLocation();
   const { newDetail } = location.state || {};
-  // console.log(newDetail);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [navBarVisible, setNavBarVisible] = useState(false);
   const [timer, setTimer] = useState(null);
   const [quizOver, setQuizOver] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
-
+//   const [startTime, setStartTime] = useState(null);
   const navigate = useNavigate();
+  console.log(newDetail);
 
   const questions = newDetail.quiz.questions;
+
+  const handlePrevious = () => {
+    if (!quizOver) {
+      setCurrentQuestionIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+      setSelectedOption(null);
+    }
+  };
+
   const quizContainerRef = useRef(null);
 
   const handleNavBarToggle = () => {
@@ -58,13 +68,6 @@ const QuizTest = () => {
     };
   }, []);
 
-  const handlePrevious = () => {
-    if (!quizOver) {
-      setCurrentQuestionIndex((prevIndex) => Math.max(prevIndex - 1, 0));
-      setSelectedOption(null);
-    }
-  };
-
   const handleNext = () => {
     setCurrentQuestionIndex((prevIndex) =>
       Math.min(prevIndex + 1, questions.length - 1)
@@ -72,23 +75,21 @@ const QuizTest = () => {
     setSelectedOption(null);
   };
 
-  const handleOptionSelect = (index, option) => {
-    // console.log(option);
-    // console.log(newDetail.quiz.questions[index].correctAnswer);
+  const handleOptionSelect = (index,option) => {
+    console.log(option);
+    console.log(newDetail.quiz.questions[index].correctAnswer);
     // const newMarkedOptions = [...markedOptions];
-    const newOptions = {
-      question: newDetail.quiz.questions[index]._id,
-      selectedOption: option,
-    };
+    const newOptions = {question: newDetail.quiz.questions[index]._id, selectedOption: option};
     // console.log(markedOptions)
-    markedOptions.push(newOptions);
-    // console.log(markedOptions);
+    markedOptions.push(newOptions);  
+    // console.log(markedOptions);  
     setSelectedOption(option);
   };
 
   const handleUndo = () => {
     setSelectedOption(null);
   };
+
   const handleQuestionNavigation = (index) => {
     setCurrentQuestionIndex(index);
 
@@ -105,8 +106,11 @@ const QuizTest = () => {
     setCurrentQuestionIndex(0);
     setTimer(quizDuration);
   };
+
   const currentQuestion = questions[currentQuestionIndex];
-  const quizDuration = 1000; // 5 minute
+
+  // Set the duration of the quiz in seconds
+  const quizDuration = 10*6*5; // 5 minutes (adjust as needed)
 
   useEffect(() => {
     // Initialize the timer when the component mounts
@@ -126,11 +130,11 @@ const QuizTest = () => {
     }, 1000);
 
     const quizOverTimeout = setTimeout(() => {
-      // setStartTime(new Date());
+        // setStartTime(new Date());
       setQuizOver(true);
       setPopupVisible(true);
       submit();
-      //   navigate('/submitted')
+    //   navigate('/submitted')
       // Clear the interval when the popup is shown
     }, quizDuration * 1000);
 
@@ -142,11 +146,12 @@ const QuizTest = () => {
   }, [quizDuration]);
 
 
+
   const submit = async () => {
-    // console.log("I want to submit the quiz...",markedOptions);
+    console.log("I want to submit the quiz...",markedOptions);
     const endTime = new Date();
-   // console.log('startTime',startTime)
-   // console.log('endTime',endTime)
+    console.log('startTime',startTime)
+    console.log('endTime',endTime)
     const timeTaken = Math.floor((endTime - startTime) / 1000)
     const timeTakenInSeconds = Math.floor((endTime - startTime) / 1000); // Calculate timeTaken in seconds
   const timeTakenInMinutes = Math.floor(timeTakenInSeconds / 60);
@@ -158,14 +163,12 @@ const QuizTest = () => {
         timeTaken: timeTakenInMinutes
     })
     if(response){
-        // console.log(response);
+        console.log(response);
         markedOptions.length = 0
         window.alert('Quiz Submitted successfully')
     }
     navigate('/submitted')
   };
-
-
   return (
     <div>
       <Header />
@@ -244,12 +247,9 @@ const QuizTest = () => {
       </div>
     </div>
   );
-
 };
-//done p
+
 export default QuizTest;
-
-
 
 export const formatTime = (seconds) => {
   const minutes = Math.floor(seconds / 60);

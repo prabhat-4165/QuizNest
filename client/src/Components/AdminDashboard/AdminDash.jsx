@@ -70,17 +70,19 @@ const AdminDash = () => {
   };
 
   return (
-      <div>
-        {loginId?(<div className="admin-main">
-          
-          <div className="admin-info  text-center mt-2 mb-4 text-success">
+      <div style={{background: "linear-gradient(rgba(0,0,50,0.7),rgba(0,0,50,0.7))", color: "#fff", height: "100vh"}}>
+        {loginId?(
+         <div className="Admin-Dashboard" >
+        <div className="admin-main">
+           
+          <div className="admin-info  text-center mt-2 mb-4 ">
             <h1 className="user-head">Welcome to Admin Dashboard {loginId.adminName}</h1> 
           </div>
           
           <div className="admin-btn text-center mb-4">
             {/* <h1 className="history-head">Custom/Random Quizes</h1> */}
           <div className="admin-btn-grp">
-            <button type="button" className="btn btn-primary create-new-quiz" onClick={()=>navigate('/custom-quiz')}>
+            <button type="button" className="btn create-new-quiz" style={{backgroundColor: "#8472c4", color:"#fff"}} onClick={()=>navigate('/custom-quiz')}>
               Create New Quizz
             </button>
             {/* <button type="button" className="btn btn-primary1" onClick={()=>navigate('/random-quiz')}>
@@ -92,10 +94,11 @@ const AdminDash = () => {
           <div className="admin-history">
             <h1 className="history-head mb-4">Your Previous Quizes :</h1>
             {quizDetail !== undefined?(
-            <table
+            <table 
               // className="table table-striped table-bordered"
               className="table table-striped "
               id="table-history"
+              
             >
               <thead  >
                 <tr>
@@ -135,7 +138,7 @@ const AdminDash = () => {
             
           </div>
         </div>
-      ) : (
+        </div>) : (
         <Login />
       )}
     </div>

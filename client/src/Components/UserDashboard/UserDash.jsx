@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import LoginContext from "../../Context/LoginContext";
 import Login from "../LoginSignup/Login";
 import axios from "axios";
+import "../../Styles/UserDash.css";
 
 const Quizcode = () => {
   const [quizCode, setquizCode] = useState("");
@@ -69,14 +70,14 @@ const Quizcode = () => {
   }
 
   return (
-    <div>
+    <div style={{background: "linear-gradient(rgba(0,0,50,0.7),rgba(0,0,50,0.7))", color: "#8472c4"}}>
       {loginId ? (
         <div>
           {/* <Header /> */}
-          <div>Welcome {loginId.userName}</div>
+          <div style={{color:"#fff"}} >Welcome {loginId.userName}</div>
           <div className="verification-container">
             <div className="codeheader">
-              <div className="codetext">Verification Code</div>
+              <div className="codetext" style={{color:"#fff"}}>Verification Code</div>
               <div className="codeunderline"></div>
             </div>
             <div className="codeinput">
@@ -93,15 +94,16 @@ const Quizcode = () => {
             </div>
           </div>
 
-          <h2 className="quiz-history-heading">Quiz History</h2>
-          <div className="quiz-history-container">
+          <h2 className="quiz-history-heading" style={{color: "#fff"}} >Quiz History</h2>
+          <div className="quiz-history-container"  style={{background: "transparent", color:"#fff" }}>
+
             {/* Quiz history items */}
 
             {quizDetail.length === 0 ? (
               <div>No User History</div>
             ) : (
               quizDetail.map((det,i)=>(
-                <div className="quiz-history-item" key={i}>
+                <div className="quiz-history-item" key={i} style={{border: "2px solid #8472c4"}} > 
                 <div>Quiz Name: {det.quizName}</div>
                 <div>Duration: {det.duration} minutes</div>
                 <div>Marks: {det.score}</div>

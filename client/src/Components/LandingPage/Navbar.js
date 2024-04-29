@@ -18,6 +18,8 @@ import PhoneRoundedIcon from "@mui/icons-material/PhoneRounded";
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import { useNavigate } from "react-router-dom";
 
+import logo from "../../Assets/logo.png"
+import "../../Styles/Navbar.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Navbar, Nav, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -70,7 +72,9 @@ function NavBar() {
             // href="#"
             style={{ marginLeft: "40px", fontSize: "30px" }}
           >
-            QuizNest
+            <div className="navbar-logo">
+            <img src={logo} alt="" />
+            </div>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
@@ -109,11 +113,11 @@ function NavBar() {
                 <Button
                   variant="outline-primary"
                   className="mr-2"
-                  style={{ marginRight: "10px" }}
+                  style={{ marginRight: "10px", color: "#fff"}}
                 >
                   <Link
                     to="/login"
-                    style={{ textDecoration: "none", margin: "8px" }}
+                      style={{ textDecoration: "none", margin: "8px" }}
                   >
                     Login
                   </Link>

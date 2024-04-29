@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Header from "../LandingPage/Header";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../../Styles/LoginSignup.css";
 
 // import BannerBackground from "./home-banner-background.png";
 const Register = (props) => {
@@ -91,12 +92,13 @@ const Register = (props) => {
   };
 
   return (
+    <div className="Login-main">
     <div className="container mt-5 mb-5">
       <div className="row justify-content-center">
         <div className="col-lg-5 col-md-6 col-sm-7">
           <div className="card p-3" style={{ backgroundColor: "#f8f9fa" }}>
             <h2 className="text-center mb-4">Register</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} id="form-id">
               <div className="mb-3">
                 <label htmlFor="name" className="form-label">
                   Full name
@@ -169,6 +171,7 @@ const Register = (props) => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

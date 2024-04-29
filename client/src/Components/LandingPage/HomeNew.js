@@ -7,9 +7,6 @@ function HomeNew() {
   return (
     <div className="HomeNew">
       <Home />
-      <About />
-      <Contact />
-      <Footer />
     </div>
   );
 }

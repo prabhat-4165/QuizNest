@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-// import "./AdminQuizDetail.css";
+import "../../Styles/AdminQuizDetail.css";
 // import BannerBackground from "./home-banner-background.png";
+// import "../../Styles/Navbar.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 import Header from "../LandingPage/Header";
 import Login from "../LoginSignup/Login";
 import axios from "axios";

@@ -4,6 +4,7 @@ import {useNavigate} from 'react-router-dom'
 import { Link } from "react-router-dom";
 // import BannerBackground from "./home-banner-background.png";
 import Header from "../LandingPage/Header";
+import "../../Styles/LoginSignup.css";
 import axios from "axios";
 import LoginContext from "../../Context/LoginContext";
 
@@ -105,6 +106,7 @@ const Login = (props) => {
 
 
   return (
+    <div className="Login-main">
     <div className="container mt-5 mb-5">
         <div className="row justify-content-center">
           <div className="col-lg-5 col-md-6 col-sm-7">
@@ -173,6 +175,7 @@ const Login = (props) => {
             </div>
           </div>
         </div>
+      </div>
       </div>
   );
 };

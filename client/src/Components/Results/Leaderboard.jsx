@@ -1,75 +1,74 @@
 import React ,{useState,useEffect}from 'react'
 import { useLocation, useSearchParams } from 'react-router-dom';
-import Header from '../LandingPage/Header';
+// import Header from '../LandingPage/Header';
 // import BannerBackground from "../R"
-// need for CSS file
+import "../../Styles/LeaderBoard.css";
 import axios from 'axios';
 
 
 
- const Leaderboard = () => {
-
+const LeaderBoard = () => {
   const location = useLocation();
-  const {quiz} = location.state || {};
-  const [LeaderboardData,setLeaderboardData] = useState([]);
+  const { quiz } = location.state || {};
+  console.log('Quiz',quiz);
+  const [leaderboardData, setLeaderboardData] = useState([]);
 
-  console.log(quiz);
+  useEffect(() => {
+    getLeaderBoard();
+  }, []);
 
-  useEffect(()=>{
-      getLeaderBoard();
-  },[]);
-
-  const getLeaderBoard = async()=>{
-    try{
-      const response = await axios.post("http://localhost:8000/get-leaderboard",{
+  const getLeaderBoard = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/get-leaderboard",
+        {
           quizId: quiz.quizId,
-      });
-      if(response){
-        setLeaderboardData(response.data.Leaderboard);
+        }
+      );
+      if (response) {
+        setLeaderboardData(response.data.leaderboard);
         console.log(response);
       }
-    } catch(err){
-      console.log("some error occure during getting leaderboard",err);
+    } catch (error) {
+      console.log("Somne Erro Occured during getting leaderboard", error);
     }
-
-  }
+  };
 
   return (
-    <>
-      <Header/>
-      <h2 className='leader-h2'>Leaderboard of Quiz</h2>
-      { quiz ? (
-          <div>
-            <div className='home-bannerImage-container'>
-                {/* <img src={BannerBackground} alt="" /> */}
-            </div>
-            <table className='leader-table'>
-              <thead>
-                <tr>
-                  <th>Position</th>
-                  <th>User Name</th>
-                  <th>Score</th>
-                  <th>Total Time</th>
-                </tr>
-              </thead>
-              <tbody>
-                {LeaderboardData.map( (entry,index) => {
-                  <tr key={index}>
-                    <td>{index+1}</td>
-                    <td>{entry.userId.name}</td>
-                    <td>{entry.score}</td>
-                    <td>{entry.timeTaken}</td>
-                  </tr>
-                })}
-              </tbody>
-            </table>
+    <div>
+      {/* <Header /> */}
+      <h2 className="leader-h2">LeaderBoard of Quiz </h2>
+      {quiz ? (
+        <div>
+          <div className="home-bannerImage-container">
+            {/* <img src={BannerBackground} alt="" /> */}
           </div>
-      ):(
-        <div> No Data Available</div>
+          <table className="leader-table">
+            <thead>
+              <tr>
+                <th>Position</th>
+                <th>User Name</th>
+                <th>Score</th>
+                <th>Total Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {leaderboardData.map((entry, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{entry.userId.name}</td>
+                  <td>{entry.score}</td>
+                  <td>{entry.timeTaken}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div>No data Available</div>
       )}
-    </>
-  )
-}
-//  done p
+    </div>
+  );
+};
 
-export default Leaderboard;
+export default LeaderBoard;

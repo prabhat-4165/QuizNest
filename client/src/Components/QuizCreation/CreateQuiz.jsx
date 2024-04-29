@@ -4,6 +4,7 @@ import Forms from "./Forms.jsx";
 // import BannerBackground from "./home-banner-background.png";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 // import "./CustomQuizz.css";
+import "../../Styles/CreateQuiz.css";
 import { IconButton } from "@mui/material";
 // import QuizContext from "./context/QuizContext.js";
 import QuizContext from "../../Context/QuizContext.js";
@@ -84,7 +85,7 @@ const CreateQuiz = () => {
   }
 
   return (
-    <div>
+    <div className="Create-Quiz">
       {loginId ? (<div>
       
       <div className="home-bannerImage-container">
@@ -149,7 +150,7 @@ const CreateQuiz = () => {
 
       <div className="custom-final" >
         <div>
-          {!isCreated? (<button  className="button-32" role="button" onClick={createQuiz}>
+          {!isCreated? (<button  className="button-32" role="button" style={{backgroundColor:"#8472c4"}} onClick={createQuiz}>
           Create Quiz
         </button>): ""}
           

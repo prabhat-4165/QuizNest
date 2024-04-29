@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 // import "./Forms.css";
+import "../../Styles/Forms.css";
 import CropOriginal from "@mui/icons-material/CropOriginal";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -93,7 +94,9 @@ const Forms = () => {
     newQuestion.splice(i + 1, 0, {
       questionText: "New Question",
       questionType: "multiple-choice",
-      options: [{ optionText: "Option 1" }],
+      options: [
+        { optionText: "Option 1" }
+      ],
       answer: false,
       answerKey: "",
       points: 0,
@@ -154,7 +157,7 @@ const Forms = () => {
                     placeholder="Question"
                     onChange={(e) => changeQuestion(e.target.value, i)}
                   />
-                  <CropOriginal />
+                  {/* <CropOriginal /> */}
                   <select
                     className="select"
                     style={{ color: "#5f6368", fontSize: "16px" }}
@@ -162,7 +165,7 @@ const Forms = () => {
                   >
                     <option value="multiple-choice">Multiple-Choice</option>
                     <option value="true-false">True-False</option>
-                    <option value="short-answer">Short-Answer</option>
+                    {/* <option value="short-answer">Short-Answer</option> */}
                   </select>
                 </div>
 
@@ -186,7 +189,7 @@ const Forms = () => {
                         }
                       />
                     </div>
-                    <CropOriginal />
+                    {/* <CropOriginal /> */}
                     <IconButton aria-label="delete">
                       <CloseIcon
                         onClick={() => {
@@ -197,7 +200,7 @@ const Forms = () => {
                   </div>
                 ))}
 
-                {ques.options.length < 5 ? (
+                {ques.options.length < 4 ? (
                   <div
                     className="add-question-body"
                     style={{
