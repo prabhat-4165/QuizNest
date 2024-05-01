@@ -94,8 +94,8 @@ const AdminQuizDetail = () => {
   return (
     <div>
       {detail !== undefined ? (
-        <div className="main-detail">
-          <Header />
+        <div className="main-detail" style={{background: "linear-gradient(rgba(0,0,50,0.7),rgba(0,0,50,0.7))", color: "#fff", minHeight: "89vh"}}>
+          {/* <Header /> */}
           <div className="home-bannerImage-container">
             {/* <img src={BannerBackground} alt="" /> */}
           </div>
@@ -196,10 +196,10 @@ const AdminQuizDetail = () => {
             </table>
           </div>
           <div className="publish-quiz">
-          <button className="btn btn-primary1" onClick={calculateScore}>
+          <button className="btn btn-primary1" style={{color: "cyan"}} onClick={calculateScore}>
               Calculate Score
             </button>
-            {isResultPublished && isclicked? (<button className="btn btn-primary1" disabled>Result Published</button>): (<button className="btn btn-primary1" onClick={publishResult}>
+            {isResultPublished && isclicked? (<button className="btn btn-primary1" disabled>Result Published</button>): (<button className="btn btn-primary1" style={{color: "cyan"}} onClick={publishResult}>
               Publish Result
             </button>)}
             

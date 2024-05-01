@@ -19,14 +19,15 @@ const Instruction = () => {
   };
 
   return (
-    <div className="instructcontainer">
-      <h1>Quiz Instructions</h1>
-      <p>
+    <div className="instructcontainer" style={{background: "linear-gradient(rgba(0,0,50,0.7),rgba(0,0,50,0.7))", color: "#fff", minHeight: "89vh"}} >
+      <h1 style={{color: "cyan", display:"flex", justifyContent: "center", marginTop:"2%"}}>Quiz Instructions</h1>
+      <div className="instruction-lines" style={{ textAlign: "center", marginTop:"2%" }}>
+      <p >
         Welcome to the Quiz App! Please read the following instructions
         carefully before starting the quiz.
       </p>
 
-      <ul>
+      <ul style={{listStylePosition:"inside"}}>
         <li>There will be a series of questions.</li>
         <li>Choose the correct answer for each question.</li>
         <li>There is a timer for this quiz.</li>
@@ -34,13 +35,16 @@ const Instruction = () => {
           Click the "Proceed" button when you are ready to start the quiz.
         </li>
       </ul>
+      </div>
       <div className="quiz-detail-user">
         <div>{}</div>
       </div>
       {proceedClicked ? (
         <p>Proceed button clicked! Add your custom content or logic here.</p>
       ) : (
-        <button onClick={handleProceedClick}>Proceed to Quiz</button>
+        <div className="proceed" style={{ display:"flex", justifyContent: "center", marginTop:"5%"}}>
+        <button style={{backgroundColor: "#8472c4"}} onClick={handleProceedClick}>Proceed to Quiz</button>
+        </div>
       )}
     </div>
   );

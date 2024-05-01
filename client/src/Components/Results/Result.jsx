@@ -41,10 +41,10 @@ const Result = () => {
     navigate('/leaderboard', {state: {quiz}});
   }
   return (
-    <div>
+    <div style={{background: "linear-gradient(rgba(0,0,50,0.7),rgba(0,0,50,0.7))", color: "#fff", minHeight: "89vh"}}>
       {/* <Header /> */}
-      <div className="Result-container">
-        <h1>Quiz Result</h1>
+      <div className="Result-container" style={{backgroundColor:"#8472c4", border:"2px solid #8472c4"}}>
+        <h1 style={{color:"#fff"}}>Quiz Result</h1>
         {/* Score:  */}
         <div className="show-quest">
           {quizData.map.length !== 0 ? (
@@ -57,7 +57,7 @@ const Result = () => {
                     <div key={jk}><input type="radio" disabled />{op}</div>
                   ))}
                 </div>
-                <div>Correct Answer: {Question.correctAnswer}</div>
+                <div style={{color:"cyan"}}>Correct Answer: {Question.correctAnswer}</div>
                 <div>Marked Answer: {Question.userSelectedOption}</div>
               </div>
             ))
@@ -67,7 +67,7 @@ const Result = () => {
         </div>
         
       </div>
-      <button onClick={getLeaderBoard}>LeaderBoard</button>
+      <button style={{backgroundColor:"#8472c4", color:"#fff"}} onClick={getLeaderBoard}>LeaderBoard</button>
     </div>
   );
 };

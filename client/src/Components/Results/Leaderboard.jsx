@@ -35,9 +35,9 @@ const LeaderBoard = () => {
   };
 
   return (
-    <div>
+    <div style={{background: "linear-gradient(rgba(0,0,50,0.7),rgba(0,0,50,0.7))", color: "#fff", minHeight: "89vh"}} >
       {/* <Header /> */}
-      <h2 className="leader-h2">LeaderBoard of Quiz </h2>
+      <h2 className="leader-h2" style={{color:"#fff"}}>LeaderBoard of Quiz </h2>
       {quiz ? (
         <div>
           <div className="home-bannerImage-container">

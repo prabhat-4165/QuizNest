@@ -70,7 +70,7 @@ const Quizcode = () => {
   }
 
   return (
-    <div style={{background: "linear-gradient(rgba(0,0,50,0.7),rgba(0,0,50,0.7))", color: "#8472c4"}}>
+    <div style={{background: "linear-gradient(rgba(0,0,50,0.7),rgba(0,0,50,0.7))", color: "#8472c4", minHeight: "89vh"}}>
       {loginId ? (
         <div>
           {/* <Header /> */}

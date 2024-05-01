@@ -110,7 +110,7 @@ const QuizTest = () => {
   const currentQuestion = questions[currentQuestionIndex];
 
   // Set the duration of the quiz in seconds
-  const quizDuration = 10*6*5; // 5 minutes (adjust as needed)
+  const quizDuration = 10*6*5*12; // 1 hour (adjust as needed)
 
   useEffect(() => {
     // Initialize the timer when the component mounts
@@ -171,7 +171,7 @@ const QuizTest = () => {
   };
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       <div className="body1">
         <div className="quiz-container" ref={quizContainerRef}>
           <button className="nav-bar-toggle" onClick={handleNavBarToggle}>
@@ -190,7 +190,7 @@ const QuizTest = () => {
             </div>
           </div>
           <div className="question-container">
-            <h2>{currentQuestion.questionText}</h2>
+            <h2 style={{color:"#fff"}} >{currentQuestion.questionText}</h2>
           </div>
           <div className="options-container">
             {currentQuestion.options.map((option, index) => (
@@ -203,6 +203,7 @@ const QuizTest = () => {
                 <div
                   className="option-circle"
                   onClick={() => handleOptionSelect(currentQuestionIndex,option)}
+                  color="#8472c4"
                 >
                   {selectedOption === option && (
                     <div className="selected-indicator">&#10003;</div>
@@ -217,19 +218,26 @@ const QuizTest = () => {
             <button
               onClick={handlePrevious}
               disabled={currentQuestionIndex === 0}
+              style={{backgroundColor:"#8472c4"}}
             >
               Previous
             </button>
-            <button onClick={handleUndo} disabled={selectedOption === null}>
+            <button onClick={handleUndo} 
+                    style={{backgroundColor:"#8472c4"}}  
+                    disabled={selectedOption === null}>
               Undo
             </button>
             <button
               onClick={handleNext}
               disabled={currentQuestionIndex === questions.length - 1}
+              style={{backgroundColor:"#8472c4"}}
             >
               Next
             </button>
-            <button onClick={submit}>Submit</button>
+            <button onClick={submit} 
+                    style={{backgroundColor:"#8472c4"}}>
+             Submit
+            </button>
             {/* {popupVisible && (
               <div className="popup">
                 <div className="popup-content">
