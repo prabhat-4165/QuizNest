@@ -1,7 +1,5 @@
 // this file will contain the quiz questions
 import React, { useState, useEffect, useRef, useContext } from "react";
-
-import Header from "../LandingPage/Header";
 import { useLocation, useNavigate } from "react-router-dom";
 import UserQuizContext from "../../Context/UserQuizContext";
 import axios from "axios";
@@ -110,7 +108,7 @@ const QuizTest = () => {
   const currentQuestion = questions[currentQuestionIndex];
 
   // Set the duration of the quiz in seconds
-  const quizDuration = 10*6*5*12; // 1 hour (adjust as needed)
+  const quizDuration = (questions.length)*60; // 1 hour (adjust as needed)
 
   useEffect(() => {
     // Initialize the timer when the component mounts
@@ -174,7 +172,7 @@ const QuizTest = () => {
       {/* <Header /> */}
       <div className="body1">
         <div className="quiz-container" ref={quizContainerRef}>
-          <button className="nav-bar-toggle" onClick={handleNavBarToggle}>
+          <button className="nav-bar-toggle" style={{backgroundColor:"#8472c4"}} onClick={handleNavBarToggle}>
             &#x2190; {/* left arrow character */}
           </button>
           <div className={`navigation-bar ${navBarVisible ? "visible" : ""}`}>

@@ -131,7 +131,7 @@ const CreateQuiz = () => {
             </div>
           </div>
           <div className="one">
-            <div className="input1">
+            {/* <div className="input1">
               <label>Duration</label>
               <input
                 className="inp"
@@ -141,7 +141,7 @@ const CreateQuiz = () => {
                 required
                 onChange={(event) => setduration(event.target.value)}
               />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
