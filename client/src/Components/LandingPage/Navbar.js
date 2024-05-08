@@ -154,7 +154,7 @@ function NavBar() {
           </Navbar.Collapse>
         </Navbar>
       </div>
-      <div style={{ paddingTop: "80px" }}>{/*  */}</div>
+      <div style={{ paddingTop: "65px" }}></div>
     </>
   );
 }

@@ -69,7 +69,7 @@ const Result = require("../Models/Result.js");
 
  const saveUserResponse = async (req, res) => {
   try {
-    const { userId, quizId, markedOptions, timeTaken } = req.body;
+    const { userId, quizId, markedOptions, TimeTaken } = req.body;
     console.log('Req.body...    ',req.body);
     const user = await User.findById(userId);
     if (!user) {
@@ -105,7 +105,7 @@ const Result = require("../Models/Result.js");
     user.attemptedQuizes.push({
       quiz: quizId,
       markedOptions: markedOptionsWithObjectId,
-      timeTaken: timeTaken,
+      TimeTaken: TimeTaken,
     });
     const updatedUser = await user.save();
     return res.json({ updatedUser });
@@ -191,6 +191,8 @@ const getResult = async (req,res) => {
         correctAnswer: question.correctAnswer,
         userSelectedOption: userSelectedOption ? userSelectedOption.selectedOption : null,
         score: attemptedQuiz.score
+
+
       };
     });
 

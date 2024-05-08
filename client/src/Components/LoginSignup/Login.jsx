@@ -107,7 +107,7 @@ const Login = (props) => {
 
   return (
     <div className="Login-main">
-    <div className="container mt-5 mb-5">
+    <div className="container mb-5">
         <div className="row justify-content-center">
           <div className="col-lg-5 col-md-6 col-sm-7">
             <div className="card p-3" style={{ backgroundColor: "#f8f9fa" }}>

@@ -37,7 +37,7 @@ const userSchema = mongoose.Schema({
           }
         }
       ],
-      timeTaken: {
+      TimeTaken: {
         type: Number,
         default: 0
       },

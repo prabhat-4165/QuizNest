@@ -150,6 +150,7 @@ const Forms = () => {
             {!questions[i].answer ? (
               <div className="questions">
                 <div className="add-question-top">
+                  <p className="text-white" >{i+1}.</p>
                   <input
                     type="text"
                     value={ques.questionText}

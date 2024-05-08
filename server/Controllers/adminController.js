@@ -125,7 +125,7 @@ const  mongoose = require('mongoose');
           resultData.users.push({
             userId: new mongoose.Types.ObjectId(userId),
             score: attemptedQuiz.score,
-            timeTaken: attemptedQuiz.timeTaken,
+            TimeTaken: attemptedQuiz.TimeTaken,
           });
         } else {
           console.warn(`User with ID ${userId} has not attempted the quiz`);
@@ -160,8 +160,8 @@ const  mongoose = require('mongoose');
         // console.log(attemptedQuiz);
 
         if (attemptedQuiz) {
-          const { timeTaken, score } = attemptedQuiz;
-          return { userId: user._id, name: user.name, timeTaken, score };
+          const { TimeTaken, score } = attemptedQuiz;
+          return { userId: user._id, name: user.name, TimeTaken, score };
         }
         return null;
       })

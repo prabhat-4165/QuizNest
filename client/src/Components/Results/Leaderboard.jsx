@@ -27,7 +27,7 @@ const LeaderBoard = () => {
       );
       if (response) {
         setLeaderboardData(response.data.leaderboard);
-        console.log(response);
+        console.log(response.data.Leaderboard);
       }
     } catch (error) {
       console.log("Somne Erro Occured during getting leaderboard", error);
@@ -58,7 +58,7 @@ const LeaderBoard = () => {
                   <td>{index + 1}</td>
                   <td>{entry.userId.name}</td>
                   <td>{entry.score}</td>
-                  <td>{entry.timeTaken}</td>
+                  <td>{entry.TimeTaken}</td>
                 </tr>
               ))}
             </tbody>

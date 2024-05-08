@@ -178,7 +178,7 @@ const AdminQuizDetail = () => {
                       <th scope="row">{ij + 1}</th>
                       <td>{usr.name}</td>
                       
-                      <td>{usr.timeTaken} mins</td>
+                      <td>{usr.TimeTaken} mins</td>
                       <td>{usr.score}</td>
                       <input
                         type="checkbox"

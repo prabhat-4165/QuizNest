@@ -158,7 +158,7 @@ const QuizTest = () => {
         userId: newDetail.userId,
         quizId: newDetail.quiz._id,
         markedOptions,
-        timeTaken: timeTakenInMinutes
+        TimeTaken: timeTakenInMinutes
     })
     if(response){
         console.log(response);
@@ -167,10 +167,35 @@ const QuizTest = () => {
     }
     navigate('/submitted')
   };
+
+  //-------this is for disable to copy text during quiz--------
+  const bodyStyle = {
+    WebkitUserSelect: 'none', /* Safari */
+    MozUserSelect: 'none', /* Firefox */
+    msUserSelect: 'none', /* IE 10+ */
+    userSelect: 'none', /* Standard syntax */
+  };
+
+  //-----this is for user submit quiz when user swtich tab--------
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        submit();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
+
   return (
     <div>
       {/* <Header /> */}
-      <div className="body1">
+      <div className="body1" style={bodyStyle}>
         <div className="quiz-container" ref={quizContainerRef}>
           <button className="nav-bar-toggle" style={{backgroundColor:"#8472c4"}} onClick={handleNavBarToggle}>
             &#x2190; {/* left arrow character */}
