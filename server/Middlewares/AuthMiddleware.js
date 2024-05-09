@@ -1,5 +1,4 @@
 import User from "../Models/User.js";
-import Admin from "../Models/Admin.js";
 import dotenv from 'dotenv';
 dotenv.config();
 import jwt from "jsonwebtoken";

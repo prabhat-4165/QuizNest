@@ -1,9 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {useNavigate} from 'react-router-dom'
 // import "./loginregister.css";
 import { Link } from "react-router-dom";
 // import BannerBackground from "./home-banner-background.png";
-import Header from "../LandingPage/Header";
 import "../../Styles/LoginSignup.css";
 import axios from "axios";
 import LoginContext from "../../Context/LoginContext";
@@ -15,93 +14,101 @@ const Login = (props) => {
   const [isError, setisError] = useState(false);
   const [error, setError] = useState("Some Error Occured!");
 
+  const [flag, setFlag] = useState(false);
+
   const navigate = useNavigate();
 
-  const {setloginId} = useContext(LoginContext);
+  const {loginId, setloginId} = useContext(LoginContext);
 
-
+  useEffect(() => {
+    console.log(loginId)
+    if(loginId) navigate('/admin')
+  }, [loginId, flag])
+  
+  useEffect(() => {
+    console.log('hey')
+    if (flag) {
+      navigate('/admin');
+    }
+  }, [flag]);
 
   const check = async (e) => {
-    e.preventDefault();
-    if (role === "user") {
-      setisError(false);
-      if (!email || !pass) {
-        setError("Some Fields are Missing!");
+     e.preventDefault();
+  if (role === "user") {
+    // User login logic
+    try {
+      const response = await axios.post("http://localhost:8000/login-user", {
+        email: email,
+        password: pass,
+      });
+      if (!response) {
         setisError(true);
+        setError("Something went wrong");
+        return;
+      } else {
+        setisError(false);
+      }
+      if (response.data.message === "User does not exist") {
+        setisError(true);
+        setError(response.data.message);
+        return;
+      } else if (response.data.message === "Invalid Password") {
+        setisError(true);
+        setError("Invalid email or Password");
         return;
       }
-
-      try {
-        const response = await axios.post("http://localhost:8000/login-user", {
-          email: email,
-          password: pass,
-        });
-        // console.log(response);
-        if (!response) {
-          setisError(true);
-          setError("Something went wrong");
-          return;
-        } else {
-          setisError(false);
-        }
-        if (response.data.message === "User does not exist") {
-          // window.alert('User does not exist')
-          setisError(true)
-          setError(response.data.message);
-          return;
-        } else if (response.data.message === "Invalid Password") {
-          setisError(true)
-          setError("Invalid email or Password");
-          return ;
-        }
-        setloginId({userId: response.data.userInfo._id, userName: response.data.userInfo.name, userEmail: response.data.userInfo.email, quizIds: response.data.userInfo.attemptedQuizes}) 
-        // console.log('here is data recieved',response)
-
-         navigate('/user')
-         window.alert("User Login successfully");
-      } catch (error) {
-        setisError(true);
-        setError("An error occurred during login");
-      }
-    } else {
-      setisError(false);
-      if (!email || !pass) {
-        setError("Some Fields are Missing!");
-        setisError(true);
-        return;
-      }
-
-      try {
-        const response = await axios.post("http://localhost:8000/login-admin", {
-          email: email,
-          password: pass,
-        });
-        // console.log(response);
-        if (!response) {
-          setisError(true);
-          setError("Something went wrong");
-          return;
-        } else {
-          setisError(false);
-        }
-        if (response.data.message === "Admin does not exist") {
-          setError(response.data.message);
-          setisError(true);
-          return;
-        } else if (response.data.message === "Invalid Password") {
-          setisError(true);
-          setError("Invalid email or Password");
-          return ;
-        } 
-        setloginId({adminId: response.data.adminId, adminName: response.data.adminName, adminEmail: response.data.adminEmail, quizIds: response.data.quizIds});
-         navigate('/admin');
-        console.log("user logged in successfully");
-        window.alert("Admin Login successfully");
-      } catch (error) {
-        setisError(true);
-        setError("An error occurred during login");
-      }
+      setloginId({
+        userId: response.data.userInfo._id,
+        userName: response.data.userInfo.name,
+        userEmail: response.data.userInfo.email,
+        quizIds: response.data.userInfo.attemptedQuizes,
+      });
+      navigate('/user');
+      window.alert("User Login successfully");
+    } catch (error) {
+      setisError(true);
+      setError("An error occurred during login");
     }
+  } else {
+    // Admin login logic
+    try {
+      const response = await axios.post("http://localhost:8000/login-admin", {
+        email: email,
+        password: pass,
+      });
+      if (!response) {
+        setisError(true);
+        setError("Something went wrong");
+        return;
+      } else {
+        setisError(false);
+      }
+      if (response.data.message === "Admin does not exist") {
+        setError(response.data.message);
+        setisError(true);
+        return;
+      } else if (response.data.message === "Invalid Password") {
+        setisError(true);
+        setError("Invalid email or Password");
+        return;
+      }
+
+      const userData = {
+        adminId: response.data.adminId,
+        adminName: response.data.adminName,
+        adminEmail: response.data.adminEmail,
+        quizIds: response.data.quizIds,
+      };
+
+      setloginId(userData); // Update loginId in context
+      sessionStorage.setItem('loginId', JSON.stringify(userData)); // Store login data in sessionStorage
+      navigate('/admin'); // Redirect to admin dashboard
+      window.alert("Admin Login successfully");
+    } catch (error) {
+      setisError(true);
+      setError("An error occurred during login");
+    }
+  }
   };
 
 
