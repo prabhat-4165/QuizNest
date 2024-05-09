@@ -23,7 +23,6 @@ const Instruction = () => {
 
   return (
     <>
-      
       <div
         className="instructcontainer"
         style={{
@@ -32,25 +31,37 @@ const Instruction = () => {
           minHeight: "89vh",
         }}
       >
-        <h3 style={{
+        <h3
+          style={{
             color: "cyan",
             display: "flex",
             justifyContent: "center",
             marginTop: "2%",
-          }}>Title : {quiz.name}</h3>
-        <p style={{
+          }}
+        >
+          Title : {quiz.name}
+        </h3>
+        <p
+          style={{
             color: "cyan",
             display: "flex",
             justifyContent: "center",
             marginTop: "2px",
-          }}>Discription : {quiz.description}</p>
-          <p style={{
+          }}
+        >
+          Discription : {quiz.description}
+        </p>
+        <p
+          style={{
             color: "cyan",
             display: "flex",
             justifyContent: "center",
             marginTop: "2px",
-          }}>Time : {quiz.duration} Minutes</p>
-            <hr className="white-line" />
+          }}
+        >
+          Time : {quiz.duration} Minutes
+        </p>
+        <hr className="white-line" />
         <h1
           style={{
             color: "cyan",
@@ -63,19 +74,28 @@ const Instruction = () => {
         </h1>
         <div
           className="instruction-lines"
-          style={{ textAlign: "center", marginTop: "2%" }}
+          style={{ textAlign: "center", marginTop: "0px" }}
         >
-          
           <p>
             Welcome to the Quiz App! Please read the following instructions
             carefully before starting the quiz.
           </p>
 
-          <ul style={{ listStylePosition: "inside" }}>
+          <ul
+            className="mt-3"
+            style={{ listStylePosition: "inside" }}
+          >
+             <li className="">
+          <strong className="font-weight-extra-bold text-decoration-underline">
+            You are not permitted to switch tabs during the quiz, attempting to do so will automatically submit your quiz.
+          </strong>
+        </li>
             <li>There will be a series of questions.</li>
             <li>Choose the correct answer for each question.</li>
             <li>There is a timer for this quiz.</li>
-            <li>Use the "Prev" and "Next" buttons to move between questions.</li>
+            <li>
+              Use the "Prev" and "Next" buttons to move between questions.
+            </li>
             <li>You can undo your selection by clicking the "Undo" button.</li>
             <li>There is no negative marking.</li>
             <li>
