@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 // import Logo from "./Logo.png";
 import { BsCart2 } from "react-icons/bs";
 import { HiOutlineBars3 } from "react-icons/hi2";
@@ -24,6 +24,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Navbar, Nav, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useLocation,NavLink } from "react-router-dom";
+import LoginContext from "../../Context/LoginContext"
 
 
 
@@ -31,6 +32,8 @@ function NavBar() {
   const location = useLocation();
   const currentPath = location.pathname;
   console.log(currentPath);
+  const navigate = useNavigate();
+  const { loginId, setloginId } = useContext(LoginContext); 
 
   // Custom - CSS
   const shadowDark = {
@@ -62,6 +65,19 @@ function NavBar() {
   const handleMouseLeave = (e) => {
     e.target.style.color = navLinkStyle.color;
     e.target.style.textDecoration = navLinkStyle.textDecoration;
+  };
+
+  const handleLogout = () => {
+    // Remove details from session storage
+    sessionStorage.removeItem('loginId');
+    setloginId(null);
+    // sessionStorage.removeItem('loginId');
+    // Navigate to the login page
+    navigate("/login");
+    
+  
+    // Log to console for debugging
+    console.log("Logged out and navigated to login page");
   };
 
   return (
@@ -140,13 +156,15 @@ function NavBar() {
                   variant="outline-primary"
                   className="mr-2"
                   style={{ marginRight: "10px" }}
+                  onClick={handleLogout}
                 >
-                  <Link
-                    to="/login"
+                  {/* <Link
+                    // to="/login"
                     style={{ textDecoration: "none", margin: "8px" }}
-                  >
+                    // onClick={handleLogout}
+                  > */}
                     Logout
-                  </Link>
+                  {/* </Link> */}
                 </Button>
                 </div>
             )}

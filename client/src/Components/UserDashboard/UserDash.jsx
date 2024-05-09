@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import Header from "../LandingPage/Header";
 // import "./quizcode.css";
 import { useNavigate } from "react-router-dom";
 import LoginContext from "../../Context/LoginContext";

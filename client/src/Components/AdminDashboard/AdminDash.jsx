@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import Header from "../LandingPage/Header";
+
 import { Link, useNavigate } from "react-router-dom";
 // import "./AdminDash.css";
 // import BannerBackground from "./home-banner-background.png";
@@ -11,19 +11,30 @@ import Login from "../LoginSignup/Login";
 
 
 const AdminDash = () => {
+
+
   const [quizDetail, setQuizDetail] = useState([]);
   const navigate = useNavigate();
-
+  
   const { loginId } = useContext(LoginContext);
-  console.log('Login ID on page load:', loginId);
+  console.log('Login ID on page load admin:', loginId);
 
   useEffect(() => {
+    console.log("hi"); // This logs "hi" to the console
+    if (!loginId) { // Checks if loginId is not present
+      navigate('/login'); // Redirects to the /login route
+    } 
+  }, [loginId, navigate]);
+
+  useEffect(() => {
+    console.log("2")
     if (loginId && loginId.quizIds) {
-      getHistory();
-      
+      getHistory();   
     }
+    
   }, [loginId]);
 
+  
   const deleteQuiz = async (i) => {
     console.log(loginId.quizIds, loginId.quizIds[i]);
     const response = await axios.post("http://localhost:8000/delete-quiz", {
@@ -69,9 +80,15 @@ const AdminDash = () => {
     navigate("/detail-quiz", { state: { detail } });
   };
 
+  useEffect(() => {
+    getHistory(); // Fetch quiz data every time the component updates
+  }, []);
+ console.log("here is the loginId: ");
+ console.log(loginId);
+
   return (
       <div style={{background: "linear-gradient(rgba(0,0,50,0.7),rgba(0,0,50,0.7))", color: "#fff", height: "100vh"}}>
-        {loginId?(
+        {(loginId!==null)?(
          <div className="Admin-Dashboard" >
         <div className="admin-main">
            
@@ -138,8 +155,9 @@ const AdminDash = () => {
             
           </div>
         </div>
-        </div>) : (
-        <Login />
+        </div>
+        ) : (
+       navigate('/login')
       )}
     </div>
   );
