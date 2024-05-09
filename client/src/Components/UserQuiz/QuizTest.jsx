@@ -5,7 +5,6 @@ import UserQuizContext from "../../Context/UserQuizContext";
 import axios from "axios";
 import "../../Styles/QuizTest.css";
 
-
 const startTime = new Date();
 const markedOptions = [];
 
@@ -18,16 +17,21 @@ const QuizTest = () => {
   const [timer, setTimer] = useState(null);
   const [quizOver, setQuizOver] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
-//   const [startTime, setStartTime] = useState(null);
+  //   const [startTime, setStartTime] = useState(null);
   const navigate = useNavigate();
   console.log(newDetail);
 
   const questions = newDetail.quiz.questions;
 
+  //-- this is for store index of option of selected answer for each question
+  const ar = new Array(questions.length).fill(-1);
+
+  const [arr, setArr] = useState(ar);
+
   const handlePrevious = () => {
     if (!quizOver) {
       setCurrentQuestionIndex((prevIndex) => Math.max(prevIndex - 1, 0));
-      setSelectedOption(null);
+      // setSelectedOption(null);
     }
   };
 
@@ -73,18 +77,25 @@ const QuizTest = () => {
     setSelectedOption(null);
   };
 
-  const handleOptionSelect = (index,option) => {
+  const handleOptionSelect = (index, option, ind) => {
     console.log(option);
     console.log(newDetail.quiz.questions[index].correctAnswer);
     // const newMarkedOptions = [...markedOptions];
-    const newOptions = {question: newDetail.quiz.questions[index]._id, selectedOption: option};
+    const newOptions = {
+      question: newDetail.quiz.questions[index]._id,
+      selectedOption: option,
+    };
     // console.log(markedOptions)
-    markedOptions.push(newOptions);  
-    // console.log(markedOptions);  
+    markedOptions.push(newOptions);
+    const newAr = [...arr];
+    newAr[index] = ind;
+    setArr(newAr);
+    // console.log(markedOptions);
     setSelectedOption(option);
   };
 
   const handleUndo = () => {
+    arr[currentQuestionIndex] = -1;
     setSelectedOption(null);
   };
 
@@ -108,7 +119,8 @@ const QuizTest = () => {
   const currentQuestion = questions[currentQuestionIndex];
 
   // Set the duration of the quiz in seconds
-  const quizDuration = (questions.length)*60; // 1 hour (adjust as needed)
+  // const quizDuration = (questions.length)*60; // 1 hour (adjust as needed)
+  const quizDuration = newDetail.quiz.duration * 60;
 
   useEffect(() => {
     // Initialize the timer when the component mounts
@@ -128,11 +140,11 @@ const QuizTest = () => {
     }, 1000);
 
     const quizOverTimeout = setTimeout(() => {
-        // setStartTime(new Date());
+      // setStartTime(new Date());
       setQuizOver(true);
       setPopupVisible(true);
       submit();
-    //   navigate('/submitted')
+      //   navigate('/submitted')
       // Clear the interval when the popup is shown
     }, quizDuration * 1000);
 
@@ -143,44 +155,45 @@ const QuizTest = () => {
     };
   }, [quizDuration]);
 
-
-
   const submit = async () => {
-    console.log("I want to submit the quiz...",markedOptions);
+    console.log("I want to submit the quiz...", markedOptions);
     const endTime = new Date();
-    console.log('startTime',startTime)
-    console.log('endTime',endTime)
-    const timeTaken = Math.floor((endTime - startTime) / 1000)
+    console.log("startTime", startTime);
+    console.log("endTime", endTime);
+    const timeTaken = Math.floor((endTime - startTime) / 1000);
     const timeTakenInSeconds = Math.floor((endTime - startTime) / 1000); // Calculate timeTaken in seconds
-  const timeTakenInMinutes = Math.floor(timeTakenInSeconds / 60);
-    console.log(timeTakenInSeconds,timeTakenInMinutes);
-    const response = await axios.post('http://localhost:8000/save-quiz',{
-        userId: newDetail.userId,
-        quizId: newDetail.quiz._id,
-        markedOptions,
-        TimeTaken: timeTakenInMinutes
-    })
-    if(response){
-        console.log(response);
-        markedOptions.length = 0
-        window.alert('Quiz Submitted successfully')
+    const timeTakenInMinutes = Math.floor(timeTakenInSeconds / 60);
+    console.log(timeTakenInSeconds, timeTakenInMinutes);
+    const response = await axios.post("http://localhost:8000/save-quiz", {
+      userId: newDetail.userId,
+      quizId: newDetail.quiz._id,
+      markedOptions,
+      TimeTaken: timeTakenInMinutes,
+    });
+    if (response) {
+      console.log(response);
+      markedOptions.length = 0;
+      window.alert("Quiz Submitted successfully");
     }
-    navigate('/submitted')
+    navigate("/submitted");
   };
 
   //-------this is for disable to copy text during quiz--------
   const bodyStyle = {
-    WebkitUserSelect: 'none', /* Safari */
-    MozUserSelect: 'none', /* Firefox */
-    msUserSelect: 'none', /* IE 10+ */
-    userSelect: 'none', /* Standard syntax */
+    WebkitUserSelect: "none" /* Safari */,
+    MozUserSelect: "none" /* Firefox */,
+    msUserSelect: "none" /* IE 10+ */,
+    userSelect: "none" /* Standard syntax */,
   };
 
   //-----this is for user submit quiz when user swtich tab--------
+
   useEffect(() => {
+
+
     const handleVisibilityChange = () => {
-      if (document.hidden) {
-        submit();
+      if ( document.hidden) {
+          submit();
       }
     };
 
@@ -197,7 +210,11 @@ const QuizTest = () => {
       {/* <Header /> */}
       <div className="body1" style={bodyStyle}>
         <div className="quiz-container" ref={quizContainerRef}>
-          <button className="nav-bar-toggle" style={{backgroundColor:"#8472c4"}} onClick={handleNavBarToggle}>
+          <button
+            className="nav-bar-toggle"
+            style={{ backgroundColor: "#8472c4" }}
+            onClick={handleNavBarToggle}
+          >
             &#x2190; {/* left arrow character */}
           </button>
           <div className={`navigation-bar ${navBarVisible ? "visible" : ""}`}>
@@ -213,22 +230,24 @@ const QuizTest = () => {
             </div>
           </div>
           <div className="question-container">
-            <h2 style={{color:"#fff"}} >{currentQuestion.questionText}</h2>
+            <h2 style={{ color: "#fff" }}>{currentQuestion.questionText}</h2>
           </div>
           <div className="options-container">
             {currentQuestion.options.map((option, index) => (
               <div
                 key={index}
                 className={`option ${
-                  selectedOption === option ? "selected" : ""
+                  arr[currentQuestionIndex] == index ? "selected" : ""
                 }`}
               >
                 <div
                   className="option-circle"
-                  onClick={() => handleOptionSelect(currentQuestionIndex,option)}
+                  onClick={() =>
+                    handleOptionSelect(currentQuestionIndex, option, index)
+                  }
                   color="#8472c4"
                 >
-                  {selectedOption === option && (
+                  {arr[currentQuestionIndex] == index && (
                     <div className="selected-indicator">&#10003;</div>
                   )}
                 </div>
@@ -241,25 +260,26 @@ const QuizTest = () => {
             <button
               onClick={handlePrevious}
               disabled={currentQuestionIndex === 0}
-              style={{backgroundColor:"#8472c4"}}
+              style={{ backgroundColor: "#8472c4" }}
             >
               Previous
             </button>
-            <button onClick={handleUndo} 
-                    style={{backgroundColor:"#8472c4"}}  
-                    disabled={selectedOption === null}>
+            <button
+              onClick={handleUndo}
+              style={{ backgroundColor: "#8472c4" }}
+              disabled={arr[currentQuestionIndex] == -1}
+            >
               Undo
             </button>
             <button
               onClick={handleNext}
               disabled={currentQuestionIndex === questions.length - 1}
-              style={{backgroundColor:"#8472c4"}}
+              style={{ backgroundColor: "#8472c4" }}
             >
               Next
             </button>
-            <button onClick={submit} 
-                    style={{backgroundColor:"#8472c4"}}>
-             Submit
+            <button onClick={submit} style={{ backgroundColor: "#8472c4" }}>
+              Submit
             </button>
             {/* {popupVisible && (
               <div className="popup">
