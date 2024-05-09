@@ -38,27 +38,31 @@ const Quizcode = () => {
   };
 
   const startQuiz = async () => {
-    // console.log(loginId);
 
-    // getHistory();
-    // console.log(quizCode)
+      // Check if the user has already taken the quiz
+  const hasTakenQuiz = quizDetail.some(detail => detail.quizId === quizCode);
+  if (hasTakenQuiz) {
+    window.alert("You have already taken this quiz.");
+    return;
+  }
 
-    const response = await axios.post("http://localhost:8000/get-quiz", {
-      quizId: quizCode,
-    });
+  // If the user hasn't taken the quiz, proceed to start it
+  const response = await axios.post("http://localhost:8000/get-quiz", {
+    quizId: quizCode,
+  });
 
-    // console.log(response);
-    // console.log(loginId);
-    if (response.data.status === 422) {
-      window.alert("Quiz Not Available");
-      return;
-    }
-    const detail = {
-      userId: loginId.userId,
-      userName: loginId.userName,
-      quiz: response.data.quiz,
-    };
-    navigate("/instruction", { state: { detail } });
+  if (response.data.status === 422) {
+    window.alert("Quiz Not Available");
+    return;
+  }
+
+  const detail = {
+    userId: loginId.userId,
+    userName: loginId.userName,
+    quiz: response.data.quiz,
+  };
+
+  navigate("/instruction", { state: { detail } });
   };
 
   const viewResult = async (quizId) => {
@@ -67,6 +71,9 @@ const Quizcode = () => {
     console.log(send);
     navigate("/result", {state: {send}})
   }
+
+   
+
 
   return (
     <div style={{background: "linear-gradient(rgba(0,0,50,0.7),rgba(0,0,50,0.7))", color: "#8472c4", minHeight: "89vh"}}>
