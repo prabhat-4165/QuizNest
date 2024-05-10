@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-// import "./Forms.css";
 import "../../Styles/Forms.css";
 import CropOriginal from "@mui/icons-material/CropOriginal";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
@@ -7,9 +6,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-// import QuizContext from "../context/QuizContext";
 import QuizContext from "../../Context/QuizContext";
- 
+
 // this component for save question in quiz 
 
 const Forms = () => {
@@ -29,10 +27,10 @@ const Forms = () => {
     },
   ]);
 
-  const {setForm} = useContext(QuizContext);
-  useEffect(()=>{
-    setForm({questions})
-  },[questions,setQuestions]);
+  const { setForm } = useContext(QuizContext);
+  useEffect(() => {
+    setForm({ questions })
+  }, [questions, setQuestions]);
 
   function changeQuestion(text, i) {
     var newQuestion = [...questions];
@@ -64,29 +62,29 @@ const Forms = () => {
   }
 
   function addOption(i) {
-  var newQuestion = [...questions];
+    var newQuestion = [...questions];
 
-  if (newQuestion[i].questionType === 'short-answer') {
-    // Remove an option for short-answer type
-    newQuestion[i].options.splice(0, 1);
-  } else if (newQuestion[i].questionType === 'true-false') {
-    // Ensure only two options for true-false type
-    newQuestion[i].options = [
-      { optionText: 'True' },
-      { optionText: 'False' },
-    ];
-  } else {
-    // Add a new option if the total options are less than 5 for other types
-    if (newQuestion[i].options.length < 5) {
-      newQuestion[i].options.push({
-        optionText: 'Option ' + (newQuestion[i].options.length + 1),
-      });
+    if (newQuestion[i].questionType === 'short-answer') {
+      // Remove an option for short-answer type
+      newQuestion[i].options.splice(0, 1);
+    } else if (newQuestion[i].questionType === 'true-false') {
+      // Ensure only two options for true-false type
+      newQuestion[i].options = [
+        { optionText: 'True' },
+        { optionText: 'False' },
+      ];
+    } else {
+      // Add a new option if the total options are less than 5 for other types
+      if (newQuestion[i].options.length < 5) {
+        newQuestion[i].options.push({
+          optionText: 'Option ' + (newQuestion[i].options.length + 1),
+        });
+      }
     }
-  }
 
-  setQuestions(newQuestion);
-  console.log(newQuestion);
-}
+    setQuestions(newQuestion);
+    console.log(newQuestion);
+  }
 
 
   function addMoreQuestions(i) {
@@ -122,20 +120,20 @@ const Forms = () => {
     setQuestions(answerofQuestion);
   }
 
-  function doneAnswer(i){
+  function doneAnswer(i) {
     var answerofQuestion = [...questions];
     answerofQuestion[i].answer = !answerofQuestion[i].answer;
     setQuestions(answerofQuestion);
   }
 
-  function setOptionPoints(points, i){
+  function setOptionPoints(points, i) {
     var Questions = [...questions];
     Questions[i].points = points;
     setQuestions(Questions);
     console.log(i + " " + points);
   }
 
-  function setOptionAnswer(ans,i){
+  function setOptionAnswer(ans, i) {
     var Questions = [...questions];
     Questions[i].answerKey = ans;
     setQuestions(Questions);
@@ -143,14 +141,14 @@ const Forms = () => {
   }
 
   return (
-    <div className="form-main"  style={{marginTop: "-10px"}}>
+    <div className="form-main" style={{ marginTop: "-10px" }}>
       <div className="question-boxes">
         {questions.map((ques, i) => (
           <div key={i}>
             {!questions[i].answer ? (
               <div className="questions">
                 <div className="add-question-top">
-                  <p className="text-white" >{i+1}.</p>
+                  <p className="text-white" >{i + 1}.</p>
                   <input
                     type="text"
                     value={ques.questionText}
@@ -158,7 +156,6 @@ const Forms = () => {
                     placeholder="Question"
                     onChange={(e) => changeQuestion(e.target.value, i)}
                   />
-                  {/* <CropOriginal /> */}
                   <select
                     className="select"
                     style={{ color: "#5f6368", fontSize: "16px" }}
@@ -166,7 +163,6 @@ const Forms = () => {
                   >
                     <option value="multiple-choice">Multiple-Choice</option>
                     <option value="true-false">True-False</option>
-                    {/* <option value="short-answer">Short-Answer</option> */}
                   </select>
                 </div>
 
@@ -174,12 +170,12 @@ const Forms = () => {
                   <div className="add-question-body" key={j}>
                     <div>
                       {/* only for symbol */}
-                    {questions[i].questionType === 'multiple-choice' || questions[i].questionType === 'true-false' ?
-                      <input
-                        type='radio'
-                        disabled
-                        className="disabled-inp"
-                      />:""}
+                      {questions[i].questionType === 'multiple-choice' || questions[i].questionType === 'true-false' ?
+                        <input
+                          type='radio'
+                          disabled
+                          className="disabled-inp"
+                        /> : ""}
                       <input
                         type="text"
                         className="option-input"
@@ -190,7 +186,6 @@ const Forms = () => {
                         }
                       />
                     </div>
-                    {/* <CropOriginal /> */}
                     <IconButton aria-label="delete">
                       <CloseIcon
                         onClick={() => {
@@ -264,8 +259,8 @@ const Forms = () => {
                 </div>
               </div>
             ) : (
-              <div className="questions" style={{width:"674px", marginLeft: "46px"}}>
-                <div className="top-header" style={{padding: "10px"}}>
+              <div className="questions" style={{ width: "674px", marginLeft: "46px" }}>
+                <div className="top-header" style={{ padding: "10px" }}>
                   Choose Correct Answer
                 </div>
                 <div className="add-question-top">
@@ -274,7 +269,7 @@ const Forms = () => {
                     value={questions[i].questionText}
                     className="questiontext"
                     placeholder="Question"
-                    
+
                     disabled
                   />
 
@@ -283,21 +278,21 @@ const Forms = () => {
                     value={questions[i].points}
                     className="questiontext"
                     placeholder="Score"
-                    min="0" step="1" 
-                    style={{marginLeft: "30px"}}
-                    onChange={(e)=>{setOptionPoints(e.target.value,i)}}
+                    min="0" step="1"
+                    style={{ marginLeft: "30px" }}
+                    onChange={(e) => { setOptionPoints(e.target.value, i) }}
                   />
-                  
+
                 </div>
 
                 {ques.options.map((op, j) => (
-                  <div className="add-question-body" key={j} style={{justifyContent: "flex-start", marginLeft: "20px", marginBottom: "5px"}}>
+                  <div className="add-question-body" key={j} style={{ justifyContent: "flex-start", marginLeft: "20px", marginBottom: "5px" }}>
                     <div>
                       <input
                         type="radio"
                         className="disabled-inp"
                         name={`ques${i}`}
-                        onClick={()=>{setOptionAnswer(questions[i].options[j].optionText,i)}}
+                        onClick={() => { setOptionAnswer(questions[i].options[j].optionText, i) }}
                       />
                       <input
                         type="text"
@@ -307,12 +302,12 @@ const Forms = () => {
                         disabled
                       />
                     </div>
-                    
+
                   </div>
                 ))}
 
-                <div className="add-question-bottom" style={{margin:"20px"}}>
-                  <button className="question-btn" onClick={()=>{doneAnswer(i)}}>Done</button>
+                <div className="add-question-bottom" style={{ margin: "20px" }}>
+                  <button className="question-btn" onClick={() => { doneAnswer(i) }}>Done</button>
                 </div>
               </div>
             )}
@@ -322,6 +317,5 @@ const Forms = () => {
     </div>
   );
 };
-// done p
 
 export default Forms;

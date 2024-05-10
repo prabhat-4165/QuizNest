@@ -117,9 +117,6 @@ const QuizTest = () => {
   };
 
   const currentQuestion = questions[currentQuestionIndex];
-
-  // Set the duration of the quiz in seconds
-  // const quizDuration = (questions.length)*60; // 1 hour (adjust as needed)
   const quizDuration = newDetail.quiz.duration * 60;
 
   useEffect(() => {
@@ -192,8 +189,8 @@ const QuizTest = () => {
 
 
     const handleVisibilityChange = () => {
-      if ( document.hidden) {
-          submit();
+      if (document.hidden) {
+        submit();
       }
     };
 
@@ -210,13 +207,6 @@ const QuizTest = () => {
       {/* <Header /> */}
       <div className="body1" style={bodyStyle}>
         <div className="quiz-container" ref={quizContainerRef}>
-          <button
-            className="nav-bar-toggle"
-            style={{ backgroundColor: "#8472c4" }}
-            onClick={handleNavBarToggle}
-          >
-            &#x2190; {/* left arrow character */}
-          </button>
           <div className={`navigation-bar ${navBarVisible ? "visible" : ""}`}>
             <div className="question-buttons">
               {questions.map((_, index) => (
@@ -236,9 +226,8 @@ const QuizTest = () => {
             {currentQuestion.options.map((option, index) => (
               <div
                 key={index}
-                className={`option ${
-                  arr[currentQuestionIndex] == index ? "selected" : ""
-                }`}
+                className={`option ${arr[currentQuestionIndex] == index ? "selected" : ""
+                  }`}
               >
                 <div
                   className="option-circle"
@@ -260,13 +249,13 @@ const QuizTest = () => {
             <button
               onClick={handlePrevious}
               disabled={currentQuestionIndex === 0}
-              style={{ backgroundColor: "#8472c4" }}
+              style={{ backgroundColor: "#8472c4", border:"0.5px solid #fff"}}
             >
               Previous
             </button>
             <button
               onClick={handleUndo}
-              style={{ backgroundColor: "#8472c4" }}
+              style={{ backgroundColor: "#8472c4", border:"0.5px solid #fff" }}
               disabled={arr[currentQuestionIndex] == -1}
             >
               Undo
@@ -274,25 +263,14 @@ const QuizTest = () => {
             <button
               onClick={handleNext}
               disabled={currentQuestionIndex === questions.length - 1}
-              style={{ backgroundColor: "#8472c4" }}
+              style={{ backgroundColor: "#8472c4", border:"0.5px solid #fff" }}
             >
               Next
             </button>
-            <button onClick={submit} style={{ backgroundColor: "#8472c4" }}>
+            <button onClick={submit}
+             style={{ backgroundColor: "#8472c4", border:"0.5px solid #fff" }}>
               Submit
             </button>
-            {/* {popupVisible && (
-              <div className="popup">
-                <div className="popup-content">
-                  <p>Quiz Over!</p>
-                  <button onClick={handlePopupRestart}>Go Back</button>
-                </div>
-                <div
-                  className="popup-overlay"
-                  onClick={() => navigate("/user")}
-                ></div>
-              </div>
-            )} */}
           </div>
         </div>
       </div>

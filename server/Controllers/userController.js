@@ -6,38 +6,36 @@ const mongoose = require("mongoose");
 const Result = require("../Models/Result.js");
 
 
- const addUser = async (req, res) => {
-   try {
-     const { name, email, password, attemptedQuizes } = req.body;
-     if (!name || !email || !password) {
-       return res.status(422).json({ message: "Some Field is missing" });
-      }
-      // const users = await User.find()
-      // console.log(users)
-      const userExist = await User.findOne({ email: email });
-      if (userExist) {
-        return res.json({ error: "User already Exist" });
-      }
-      
-      const adminExist = await Admin.findOne({ email: email });
-      
-      if (adminExist) {
-        return res.status(422).json({ message: "Already registered as Admin" });
-      }
-      
-      const user = new User({ name, email, password });
-      const userRegister = await user.save();
-      console.log("function called")
-      if (userRegister) {
-        return res.status(201).json({ message: "User registered successfully" });
-      } else return res.status(500).json({ message: "Cannot Register" });
+const addUser = async (req, res) => {
+  try {
+    const { name, email, password, attemptedQuizes } = req.body;
+    if (!name || !email || !password) {
+      return res.status(422).json({ message: "Some Field is missing" });
+    }
+    const userExist = await User.findOne({ email: email });
+    if (userExist) {
+      return res.json({ error: "User already Exist" });
+    }
+
+    const adminExist = await Admin.findOne({ email: email });
+
+    if (adminExist) {
+      return res.status(422).json({ message: "Already registered as Admin" });
+    }
+
+    const user = new User({ name, email, password });
+    const userRegister = await user.save();
+    console.log("function called")
+    if (userRegister) {
+      return res.status(201).json({ message: "User registered successfully" });
+    } else return res.status(500).json({ message: "Cannot Register" });
   } catch (error) {
     console.log(error)
     return res.status(500).json(error.message);
   }
 };
 
- const getUser = async (req, res) => {
+const getUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -55,7 +53,7 @@ const Result = require("../Models/Result.js");
     if (!isPasswordValid) {
       return res.status(200).json({ message: "Invalid Password" });
     }
-     console.log(user)
+    console.log(user)
     return res
       .status(201)
       .json({ userInfo: user, message: "User login successfully" });
@@ -67,39 +65,28 @@ const Result = require("../Models/Result.js");
 
 
 
- const saveUserResponse = async (req, res) => {
+const saveUserResponse = async (req, res) => {
   try {
     const { userId, quizId, markedOptions, TimeTaken } = req.body;
-    console.log('Req.body...    ',req.body);
+    console.log('Req.body...    ', req.body);
     const user = await User.findById(userId);
     if (!user) {
       return res.json({ status: 422, message: "User Not find" });
     }
-    // const isQuizAttempted = await User.findOne({
-    //   "attemptedQuizes.quiz": quizId,
-    // });
-    // if (isQuizAttempted) {
-    //   return res.json({
-    //     status: 422,
-    //     message: "User had already attempted quiz",
-    //   });
-    // }
+
     const quiz = await Quiz.findById(quizId);
     if (!quiz) {
       return res.json({ status: 422, message: "quiz not found" });
     }
     const userIdObject = new mongoose.Types.ObjectId(userId);
-    // const haveUserAttempted = await Quiz.findOne({ attemptedBy: userIdObject });
-    // if (haveUserAttempted) {
-    //   return res.json({ status: 422, message: "User have already attempted" });
-    // }
+
     quiz.attemptedBy.push(userIdObject);
     const updatedQuiz = await quiz.save();
     console.log(updatedQuiz);
 
     const markedOptionsWithObjectId = markedOptions.map(option => ({
-        question: new mongoose.Types.ObjectId(option.question),
-        selectedOption: option.selectedOption
+      question: new mongoose.Types.ObjectId(option.question),
+      selectedOption: option.selectedOption
     }));
 
     user.attemptedQuizes.push({
@@ -115,13 +102,13 @@ const Result = require("../Models/Result.js");
 };
 
 
-const getUserHistory = async (req,res) => {
-  try{
-    const {userId} = req.body;
+const getUserHistory = async (req, res) => {
+  try {
+    const { userId } = req.body;
 
     const user = await User.findById(userId);
-    if(!user){
-      return res.json({status: 422, message: "User not found"});
+    if (!user) {
+      return res.json({ status: 422, message: "User not found" });
     }
 
     const attemptedQuizes = user.attemptedQuizes;
@@ -130,7 +117,6 @@ const getUserHistory = async (req,res) => {
       attemptedQuizes.map(async (attemptedQuiz) => {
         const quizId = attemptedQuiz.quiz;
         const quiz = await Quiz.findById(quizId);
-        // const admin = quiz.createdBy;
         const isResultPublished = await Result.findOne({
           quiz: quizId,
           'users.userId': userId,
@@ -145,17 +131,15 @@ const getUserHistory = async (req,res) => {
       })
     );
 
-    return res.json({status: 201, userHistory});
-  }catch(error){
-    console.log('Some error Occured during getting user history',error)
+    return res.json({ status: 201, userHistory });
+  } catch (error) {
+    console.log('Some error Occured during getting user history', error)
   }
 }
 
-const getResult = async (req,res) => {
+const getResult = async (req, res) => {
   try {
     const { userId, quizId } = req.body;
-
-    // Check if the user exists
     const user = await User.findById(userId);
     if (!user) {
       return res.json({ status: 404, message: 'User not found' });
@@ -191,8 +175,6 @@ const getResult = async (req,res) => {
         correctAnswer: question.correctAnswer,
         userSelectedOption: userSelectedOption ? userSelectedOption.selectedOption : null,
         score: attemptedQuiz.score
-
-
       };
     });
 

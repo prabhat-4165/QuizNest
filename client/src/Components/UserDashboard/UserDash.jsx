@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-// import "./quizcode.css";
 import { useNavigate } from "react-router-dom";
 import LoginContext from "../../Context/LoginContext";
 import Login from "../LoginSignup/Login";
@@ -30,7 +29,6 @@ const Quizcode = () => {
       if (response) {
         setquizDetail(response.data.userHistory);
         console.log(quizDetail);
-        // console.log(response.data.userHistory);
       }
     } catch (error) {
       console.log("Some Error Occured during getting quiz history", error);
@@ -39,51 +37,50 @@ const Quizcode = () => {
 
   const startQuiz = async () => {
 
-      // Check if the user has already taken the quiz
-  const hasTakenQuiz = quizDetail.some(detail => detail.quizId === quizCode);
-  if (hasTakenQuiz) {
-    window.alert("You have already taken this quiz.");
-    return;
-  }
+    // Check if the user has already taken the quiz
+    const hasTakenQuiz = quizDetail.some(detail => detail.quizId === quizCode);
+    if (hasTakenQuiz) {
+      window.alert("You have already taken this quiz.");
+      return;
+    }
 
-  // If the user hasn't taken the quiz, proceed to start it
-  const response = await axios.post("http://localhost:8000/get-quiz", {
-    quizId: quizCode,
-  });
+    // If the user hasn't taken the quiz, proceed to start it
+    const response = await axios.post("http://localhost:8000/get-quiz", {
+      quizId: quizCode,
+    });
 
-  if (response.data.status === 422) {
-    window.alert("Quiz Not Available");
-    return;
-  }
+    if (response.data.status === 422) {
+      window.alert("Quiz Not Available");
+      return;
+    }
 
-  const detail = {
-    userId: loginId.userId,
-    userName: loginId.userName,
-    quiz: response.data.quiz,
-  };
+    const detail = {
+      userId: loginId.userId,
+      userName: loginId.userName,
+      quiz: response.data.quiz,
+    };
 
-  navigate("/instruction", { state: { detail } });
+    navigate("/instruction", { state: { detail } });
   };
 
   const viewResult = async (quizId) => {
     // console.log(quizId,loginId.userId);
-    const send = {quizId: quizId, userId: loginId.userId};
+    const send = { quizId: quizId, userId: loginId.userId };
     console.log(send);
-    navigate("/result", {state: {send}})
+    navigate("/result", { state: { send } })
   }
 
-   
+
 
 
   return (
-    <div style={{background: "linear-gradient(rgba(0,0,50,0.7),rgba(0,0,50,0.7))", color: "#8472c4", minHeight: "89vh"}}>
+    <div style={{ background: "linear-gradient(rgba(0,0,50,0.7),rgba(0,0,50,0.7))", color: "#8472c4", minHeight: "89vh" }}>
       {loginId ? (
         <div>
-          {/* <Header /> */}
-          <div style={{color:"#fff"}} >Welcome {loginId.userName}</div>
+          <div style={{ color: "#fff" }} >Welcome {loginId.userName}</div>
           <div className="verification-container">
             <div className="codeheader">
-              <div className="codetext" style={{color:"#fff"}}>Verification Code</div>
+              <div className="codetext" style={{ color: "#fff" }}>Verification Code</div>
               <div className="codeunderline"></div>
             </div>
             <div className="codeinput">
@@ -100,22 +97,20 @@ const Quizcode = () => {
             </div>
           </div>
 
-          <h2 className="quiz-history-heading" style={{color: "#fff"}} >Quiz History</h2>
-          <div className="quiz-history-container"  style={{background: "transparent", color:"#fff" }}>
-
-            {/* Quiz history items */}
+          <h2 className="quiz-history-heading" style={{ color: "#fff" }} >Quiz History</h2>
+          <div className="quiz-history-container" style={{ background: "transparent", color: "#fff" }}>
 
             {quizDetail.length === 0 ? (
               <div>No User History</div>
             ) : (
-              quizDetail.map((det,i)=>(
-                <div className="quiz-history-item" key={i} style={{border: "2px solid #8472c4"}} > 
-                <div>Quiz Name: {det.quizName}</div>
-                <div>Duration: {det.duration} minutes</div>
-                <div>Marks: {det.score}</div>
-                {det.score !== "Not available" ? (<button onClick={()=>viewResult(det.quizId)}>View</button>): (<button disabled>Not Published</button>)}
-                
-              </div>
+              quizDetail.map((det, i) => (
+                <div className="quiz-history-item" key={i} style={{ border: "2px solid #8472c4" }} >
+                  <div>Quiz Name: {det.quizName}</div>
+                  <div>Duration: {det.duration} minutes</div>
+                  <div>Marks: {det.score}</div>
+                  {det.score !== "Not available" ? (<button onClick={() => viewResult(det.quizId)}>View</button>) : (<button disabled>Not Published</button>)}
+
+                </div>
               ))
             )}
           </div>

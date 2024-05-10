@@ -1,6 +1,4 @@
-// this file is for starting quiz after reading instruction
 import React, { useContext, useState } from "react";
-// CSS
 import { useLocation, useNavigate } from "react-router-dom";
 import UserQuizContext from "../../Context/UserQuizContext";
 import axios from "axios";
@@ -129,6 +127,5 @@ const Instruction = () => {
     </>
   );
 };
-// done p
 
 export default Instruction;

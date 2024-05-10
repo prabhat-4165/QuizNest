@@ -1,29 +1,11 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useContext } from "react";
-// import Logo from "./Logo.png";
-import { BsCart2 } from "react-icons/bs";
-import { HiOutlineBars3 } from "react-icons/hi2";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import HomeIcon from "@mui/icons-material/Home";
-import InfoIcon from "@mui/icons-material/Info";
-import CommentRoundedIcon from "@mui/icons-material/CommentRounded";
-import PhoneRoundedIcon from "@mui/icons-material/PhoneRounded";
-import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import { useNavigate } from "react-router-dom";
-
 import logo from "../../Assets/logo.png"
 import "../../Styles/Navbar.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Navbar, Nav, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useLocation,NavLink } from "react-router-dom";
+import { useLocation, NavLink } from "react-router-dom";
 import LoginContext from "../../Context/LoginContext"
 
 
@@ -33,7 +15,7 @@ function NavBar() {
   const currentPath = location.pathname;
   console.log(currentPath);
   const navigate = useNavigate();
-  const { loginId, setloginId } = useContext(LoginContext); 
+  const { loginId, setloginId } = useContext(LoginContext);
 
   // Custom - CSS
   const shadowDark = {
@@ -71,11 +53,9 @@ function NavBar() {
     // Remove details from session storage
     sessionStorage.removeItem('loginId');
     setloginId(null);
-    // sessionStorage.removeItem('loginId');
-    // Navigate to the login page
     navigate("/login");
-    
-  
+
+
     // Log to console for debugging
     console.log("Logged out and navigated to login page");
   };
@@ -85,11 +65,10 @@ function NavBar() {
       <div>
         <Navbar bg="light" expand="lg" fixed="top" style={shadowDark}>
           <Navbar.Brand
-            // href="#"
             style={{ marginLeft: "40px", fontSize: "30px" }}
           >
             <div className="navbar-logo">
-            <img src={logo} alt="" />
+              <img src={logo} alt="" />
             </div>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -120,55 +99,49 @@ function NavBar() {
                 Scores
               </NavLink>
             </Nav>
-          
-          <div>
-            {currentPath === "/" ||
-            currentPath === "/login" ||
-            currentPath === "/register" ? (
-              <div className="d-lg-block me-4" style={{ position: "relative" }}>
-                <Button
-                  variant="outline-primary"
-                  className="mr-2"
-                  style={{ marginRight: "10px", color: "#fff"}}
-                >
-                  <Link
-                    to="/login"
+
+            <div>
+              {currentPath === "/" ||
+                currentPath === "/login" ||
+                currentPath === "/register" ? (
+                <div className="d-lg-block me-4" style={{ position: "relative" }}>
+                  <Button
+                    variant="outline-primary"
+                    className="mr-2"
+                    style={{ marginRight: "10px", color: "#fff" }}
+                  >
+                    <Link
+                      to="/login"
                       style={{ textDecoration: "none", margin: "8px" }}
+                    >
+                      Login
+                    </Link>
+                  </Button>
+                  <Button
+                    variant="outline-primary"
+                    style={{ marginRight: "20px" }}
                   >
-                    Login
-                  </Link>
-                </Button>
-                <Button
-                  variant="outline-primary"
-                  style={{ marginRight: "20px" }}
-                >
-                  <Link
-                    to="/register"
-                    style={{ textDecoration: "none", margin: "8px" }}
-                  >
-                    Register
-                  </Link>
-                </Button>
-              </div>
-            ) : (
-              <div className="d-lg-block me-4" style={{ position: "relative" }}>
-                <Button
-                  variant="outline-primary"
-                  className="mr-2"
-                  style={{ marginRight: "10px" }}
-                  onClick={handleLogout}
-                >
-                  {/* <Link
-                    // to="/login"
-                    style={{ textDecoration: "none", margin: "8px" }}
-                    // onClick={handleLogout}
-                  > */}
-                    Logout
-                  {/* </Link> */}
-                </Button>
+                    <Link
+                      to="/register"
+                      style={{ textDecoration: "none", margin: "8px" }}
+                    >
+                      Register
+                    </Link>
+                  </Button>
                 </div>
-            )}
-          </div>
+              ) : (
+                <div className="d-lg-block me-4" style={{ position: "relative" }}>
+                  <Button
+                    variant="outline-primary"
+                    className="mr-2"
+                    style={{ marginRight: "10px" }}
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </Button>
+                </div>
+              )}
+            </div>
           </Navbar.Collapse>
         </Navbar>
       </div>
@@ -178,76 +151,3 @@ function NavBar() {
 }
 
 export default NavBar;
-
-
-
-//  but it is same as header.js
-
-
-// old code -----
-
-// const Navbar = () => {
-//   const navigate = useNavigate();
-//   const [openMenu, setOpenMenu] = useState(false);
-//   const menuOptions = [
-//     {
-//       text: "Home",
-//       icon: <HomeIcon />,
-//       route: ''
-//     },
-//     {
-//       text: "About",
-//       icon: <InfoIcon />,
-//       route: 'about'
-//     },
-//     {
-//       text: "Contact",
-//       icon: <PhoneRoundedIcon />,
-//       route: 'contact'
-//     },
-//   ];
-//   return (
-//     <nav>
-//       <div className="nav-logo-container">
-//         {/* <img className="logo" src={Logo} alt="" /> */}
-//       </div>
-//       <div className="navbar-links-container">
-//         <a onClick={()=>navigate('/')} style={{cursor: 'pointer'}}>Home</a>
-//         <a onClick={()=>navigate('/about')} style={{cursor: 'pointer'}}>About</a>
-//         {/* <a href="">Testimonials</a> */}
-//         <a onClick={()=>navigate('/contact')} style={{cursor: 'pointer'}}>Contact</a>
-//         {/* <a href="">
-//           <BsCart2 className="navbar-cart-icon" />
-//         </a> */}
-//         {/* <button className="primary-button">Bookings Now</button> */}
-//       </div>
-//       <div className="navbar-menu-container">
-//         <HiOutlineBars3 onClick={() => setOpenMenu(true)} />
-//       </div>
-//       <Drawer open={openMenu} onClose={() => setOpenMenu(false)} anchor="right">
-//         <Box
-//           sx={{ width: 250 }}
-//           role="presentation"
-//           onClick={() => setOpenMenu(false)}
-//           onKeyDown={() => setOpenMenu(false)}
-//         >
-//           <List>
-//             {menuOptions.map((item) => (
-//               <ListItem key={item.text} disablePadding>
-//                 <ListItemButton>
-//                   <ListItemIcon>{item.icon}</ListItemIcon>
-//                   <ListItemText primary={item.text} onClick={()=>navigate(`/${item.route}`)}/>
-//                 </ListItemButton>
-//               </ListItem>
-//             ))}
-//           </List>
-         
-//           <Divider />
-//         </Box>
-//       </Drawer>
-//     </nav>
-//   );
-// };
-// // done p
-
-// export default Navbar;

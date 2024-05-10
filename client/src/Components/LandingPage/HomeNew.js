@@ -1,5 +1,4 @@
 import Home from "./Home";
-// import "./HomeNew.css";
 function HomeNew() {
   return (
     <div className="HomeNew">

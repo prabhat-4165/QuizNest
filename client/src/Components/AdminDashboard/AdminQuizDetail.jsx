@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "../../Styles/AdminQuizDetail.css";
-// import BannerBackground from "./home-banner-background.png";
-// import "../../Styles/Navbar.css";
-// import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "../LoginSignup/Login";
 import axios from "axios";
 
@@ -18,9 +15,9 @@ const AdminQuizDetail = () => {
   const [userHistory, setUserHistroy] = useState([]);
   const [isclicked, setIsclicked] = useState(false);
   const userIds = [];
-  useEffect(()=>{
+  useEffect(() => {
     getHistory();
-  },[])
+  }, [])
   const handleCheckboxChange = (index) => {
     const newCheckedState = [...isChecked];
     newCheckedState[index] = !newCheckedState[index];
@@ -28,75 +25,66 @@ const AdminQuizDetail = () => {
   };
 
   const getHistory = async () => {
-    try{
-      const response = await axios.post("http://localhost:8000/admin-user-history",{
+    try {
+      const response = await axios.post("http://localhost:8000/admin-user-history", {
         quizId: detail.quiz._id
       })
-      if(response){
+      if (response) {
         setUserHistroy(response.data.result);
         console.log(response.data.result);
       }
-      try{
-        const response = await axios.post('http://localhost:8000/check-result-published',{
+      try {
+        const response = await axios.post('http://localhost:8000/check-result-published', {
           adminId: detail.adminId,
           quizId: detail.quiz._id
         })
-        if(response){
-          // console.log('check',response.data.isresultPublished)
+        if (response) {
           setisResultPublished(response.data.isresultPublished)
         }
-      }catch(error){
-        console.log('Some error occured while checking result published',error);
+      } catch (error) {
+        console.log('Some error occured while checking result published', error);
       }
-    }catch(error){
-      console.log('Some error occured during getting history',error)
+    } catch (error) {
+      console.log('Some error occured during getting history', error)
     }
   }
 
   const publishResult = async () => {
-    detail.quiz.attemptedBy.map((user,i)=>userIds.push({userId: user._id, isAllowedToViewResult: isChecked[i]}))
+    detail.quiz.attemptedBy.map((user, i) => userIds.push({ userId: user._id, isAllowedToViewResult: isChecked[i] }))
     // console.log(userIds)
-    try{
-      // const res = {
-      //   adminId: detail.adminId,
-      //   userIds,
-      //   quizId: detail.quiz._id
-      // }
-      // console.log('res',res);
-      const response = await axios.post('http://localhost:8000/publish-result',{
+    try {
+      const response = await axios.post('http://localhost:8000/publish-result', {
         adminId: detail.adminId,
         userIds: userIds,
         quizId: detail.quiz._id
       })
-      if(response){
-        console.log('Response',response)
+      if (response) {
+        console.log('Response', response)
         setIsclicked(true);
         window.alert('Quiz Result published successfully');
       }
-    }catch(error){
-      console.log('Some Error occured during publishing result',error)
+    } catch (error) {
+      console.log('Some Error occured during publishing result', error)
     }
   };
 
-  const calculateScore = async () =>{
-    try{
-      const response = await axios.post('http://localhost:8000/calculate-score',{
+  const calculateScore = async () => {
+    try {
+      const response = await axios.post('http://localhost:8000/calculate-score', {
         quizId: detail.quiz._id
       })
-      if(response){
+      if (response) {
         window.alert('Score calculated successfully');
       }
-    }catch(error){
-      console.log('Some Error occured during calculating score',error);
+    } catch (error) {
+      console.log('Some Error occured during calculating score', error);
     }
   }
   return (
     <div>
       {detail !== undefined ? (
-        <div className="main-detail" style={{background: "linear-gradient(rgba(0,0,50,0.7),rgba(0,0,50,0.7))", color: "#fff", minHeight: "89vh"}}>
-          {/* <Header /> */}
+        <div className="main-detail" style={{ background: "linear-gradient(rgba(0,0,50,0.7),rgba(0,0,50,0.7))", color: "#fff", minHeight: "89vh" }}>
           <div className="home-bannerImage-container">
-            {/* <img src={BannerBackground} alt="" /> */}
           </div>
           <div className="quiz-detail">
             <div className="details">
@@ -163,7 +151,7 @@ const AdminQuizDetail = () => {
                 <tr>
                   <th scope="col">S. No.</th>
                   <th scope="col">User-Name</th>
-                  
+
                   <th scope="col">Time-taken</th>
                   <th scope="col">Score</th>
                   <th scope="col">Manage</th>
@@ -176,7 +164,7 @@ const AdminQuizDetail = () => {
                     <tr key={ij}>
                       <th scope="row">{ij + 1}</th>
                       <td>{usr.name}</td>
-                      
+
                       <td>{usr.TimeTaken} mins</td>
                       <td>{usr.score}</td>
                       <input
@@ -195,13 +183,13 @@ const AdminQuizDetail = () => {
             </table>
           </div>
           <div className="publish-quiz">
-          <button className="btn btn-primary1" style={{color: "cyan"}} onClick={calculateScore}>
+            <button className="btn btn-primary1" style={{ color: "cyan" }} onClick={calculateScore}>
               Calculate Score
             </button>
-            {isResultPublished && isclicked? (<button className="btn btn-primary1" disabled>Result Published</button>): (<button className="btn btn-primary1" style={{color: "cyan"}} onClick={publishResult}>
+            {isResultPublished && isclicked ? (<button className="btn btn-primary1" disabled>Result Published</button>) : (<button className="btn btn-primary1" style={{ color: "cyan" }} onClick={publishResult}>
               Publish Result
             </button>)}
-            
+
           </div>
         </div>
       ) : (

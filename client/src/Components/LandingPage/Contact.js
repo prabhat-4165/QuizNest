@@ -6,5 +6,4 @@ import React from 'react'
     </>
   );
 };
-// done p
 export default Contact;

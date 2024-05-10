@@ -1,8 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
-import {useNavigate} from 'react-router-dom'
-// import "./loginregister.css";
+import { useNavigate } from 'react-router-dom'
 import { Link } from "react-router-dom";
-// import BannerBackground from "./home-banner-background.png";
 import "../../Styles/LoginSignup.css";
 import axios from "axios";
 import LoginContext from "../../Context/LoginContext";
@@ -18,13 +16,13 @@ const Login = (props) => {
 
   const navigate = useNavigate();
 
-  const {loginId, setloginId} = useContext(LoginContext);
+  const { loginId, setloginId } = useContext(LoginContext);
 
   useEffect(() => {
     console.log(loginId)
-    if(loginId) navigate('/admin')
+    if (loginId) navigate('/admin')
   }, [loginId, flag])
-  
+
   useEffect(() => {
     console.log('hey')
     if (flag) {
@@ -33,88 +31,88 @@ const Login = (props) => {
   }, [flag]);
 
   const check = async (e) => {
-     e.preventDefault();
-  if (role === "user") {
-    // User login logic
-    try {
-      const response = await axios.post("http://localhost:8000/login-user", {
-        email: email,
-        password: pass,
-      });
-      if (!response) {
+    e.preventDefault();
+    if (role === "user") {
+      // User login logic
+      try {
+        const response = await axios.post("http://localhost:8000/login-user", {
+          email: email,
+          password: pass,
+        });
+        if (!response) {
+          setisError(true);
+          setError("Something went wrong");
+          return;
+        } else {
+          setisError(false);
+        }
+        if (response.data.message === "User does not exist") {
+          setisError(true);
+          setError(response.data.message);
+          return;
+        } else if (response.data.message === "Invalid Password") {
+          setisError(true);
+          setError("Invalid email or Password");
+          return;
+        }
+        setloginId({
+          userId: response.data.userInfo._id,
+          userName: response.data.userInfo.name,
+          userEmail: response.data.userInfo.email,
+          quizIds: response.data.userInfo.attemptedQuizes,
+        });
+        navigate('/user');
+        window.alert("User Login successfully");
+      } catch (error) {
         setisError(true);
-        setError("Something went wrong");
-        return;
-      } else {
-        setisError(false);
+        setError("An error occurred during login");
       }
-      if (response.data.message === "User does not exist") {
-        setisError(true);
-        setError(response.data.message);
-        return;
-      } else if (response.data.message === "Invalid Password") {
-        setisError(true);
-        setError("Invalid email or Password");
-        return;
-      }
-      setloginId({
-        userId: response.data.userInfo._id,
-        userName: response.data.userInfo.name,
-        userEmail: response.data.userInfo.email,
-        quizIds: response.data.userInfo.attemptedQuizes,
-      });
-      navigate('/user');
-      window.alert("User Login successfully");
-    } catch (error) {
-      setisError(true);
-      setError("An error occurred during login");
-    }
-  } else {
-    // Admin login logic
-    try {
-      const response = await axios.post("http://localhost:8000/login-admin", {
-        email: email,
-        password: pass,
-      });
-      if (!response) {
-        setisError(true);
-        setError("Something went wrong");
-        return;
-      } else {
-        setisError(false);
-      }
-      if (response.data.message === "Admin does not exist") {
-        setError(response.data.message);
-        setisError(true);
-        return;
-      } else if (response.data.message === "Invalid Password") {
-        setisError(true);
-        setError("Invalid email or Password");
-        return;
-      }
+    } else {
+      // Admin login logic
+      try {
+        const response = await axios.post("http://localhost:8000/login-admin", {
+          email: email,
+          password: pass,
+        });
+        if (!response) {
+          setisError(true);
+          setError("Something went wrong");
+          return;
+        } else {
+          setisError(false);
+        }
+        if (response.data.message === "Admin does not exist") {
+          setError(response.data.message);
+          setisError(true);
+          return;
+        } else if (response.data.message === "Invalid Password") {
+          setisError(true);
+          setError("Invalid email or Password");
+          return;
+        }
 
-      const userData = {
-        adminId: response.data.adminId,
-        adminName: response.data.adminName,
-        adminEmail: response.data.adminEmail,
-        quizIds: response.data.quizIds,
-      };
+        const userData = {
+          adminId: response.data.adminId,
+          adminName: response.data.adminName,
+          adminEmail: response.data.adminEmail,
+          quizIds: response.data.quizIds,
+        };
 
-      setloginId(userData); // Update loginId in context
-      sessionStorage.setItem('loginId', JSON.stringify(userData)); // Store login data in sessionStorage
-      navigate('/admin'); // Redirect to admin dashboard
-      window.alert("Admin Login successfully");
-    } catch (error) {
-      setisError(true);
-      setError("An error occurred during login");
+        setloginId(userData); // Update loginId in context
+        sessionStorage.setItem('loginId', JSON.stringify(userData)); // Store login data in sessionStorage
+        navigate('/admin'); // Redirect to admin dashboard
+        window.alert("Admin Login successfully");
+      } catch (error) {
+        setisError(true);
+        setError("An error occurred during login");
+      }
     }
-  }
   };
 
 
   return (
     <div className="Login-main">
-    <div className="container mb-5">
+      <div className="container mb-5">
         <div className="row justify-content-center">
           <div className="col-lg-5 col-md-6 col-sm-7">
             <div className="card p-3" style={{ backgroundColor: "#f8f9fa" }}>
@@ -183,9 +181,8 @@ const Login = (props) => {
           </div>
         </div>
       </div>
-      </div>
+    </div>
   );
 };
-// done p
 
 export default Login;

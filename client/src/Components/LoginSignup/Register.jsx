@@ -1,11 +1,8 @@
 import React, { useState } from "react";
-// import "./loginregister.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../../Styles/LoginSignup.css";
-
-// import BannerBackground from "./home-banner-background.png";
 const Register = (props) => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
@@ -51,7 +48,6 @@ const Register = (props) => {
         } else {
           window.alert("Registered successfully");
           navigate("/login");
-          // can we use navigate here
         }
       } catch (error) {
         setisError(true);
@@ -92,89 +88,87 @@ const Register = (props) => {
 
   return (
     <div className="Login-main">
-    <div className="container mb-5 ">
-      <div className="row justify-content-center">
-        <div className="col-lg-5 col-md-6 col-sm-7">
-          <div className="card p-3" style={{ backgroundColor: "#f8f9fa" }}>
-            <h2 className="text-center mb-4">Register</h2>
-            <form onSubmit={handleSubmit} id="form-id">
-              <div className="mb-3">
-                <label htmlFor="name" className="form-label">
-                  Full name
-                </label>
-                <input
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  type="text"
-                  className="form-control"
-                  id="name"
-                  placeholder="Full Name"
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="email" className="form-label">
-                  Email
-                </label>
-                <input
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  type="email"
-                  className="form-control"
-                  id="email"
-                  placeholder="Email"
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="password" className="form-label">
-                  Password
-                </label>
-                <input
-                  value={pass}
-                  onChange={(e) => setPass(e.target.value)}
-                  type="password"
-                  className="form-control"
-                  id="password"
-                  placeholder="Password"
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="role" className="form-label">
-                  Role
-                </label>
-                <select
-                  className="form-select"
-                  id="role"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                >
-                  <option value="user">User</option>
-                  <option value="admin">Admin</option>
-                </select>
-              </div>
-              <div className="mb-3 text-center">
-                <button type="submit" className="btn btn-primary">
-                  Register
-                </button>
-              </div>
-              {isError && (
-                <div className="alert alert-danger" role="alert">
-                  {error}
+      <div className="container mb-5 ">
+        <div className="row justify-content-center">
+          <div className="col-lg-5 col-md-6 col-sm-7">
+            <div className="card p-3" style={{ backgroundColor: "#f8f9fa" }}>
+              <h2 className="text-center mb-4">Register</h2>
+              <form onSubmit={handleSubmit} id="form-id">
+                <div className="mb-3">
+                  <label htmlFor="name" className="form-label">
+                    Full name
+                  </label>
+                  <input
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    type="text"
+                    className="form-control"
+                    id="name"
+                    placeholder="Full Name"
+                  />
                 </div>
-              )}
-            </form>
-            <div className="text-center">
-              <Link to={"/login"} className="text-decoration-none">
-                Already Registered? Login Here
-              </Link>
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label">
+                    Email
+                  </label>
+                  <input
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    type="email"
+                    className="form-control"
+                    id="email"
+                    placeholder="Email"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="password" className="form-label">
+                    Password
+                  </label>
+                  <input
+                    value={pass}
+                    onChange={(e) => setPass(e.target.value)}
+                    type="password"
+                    className="form-control"
+                    id="password"
+                    placeholder="Password"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="role" className="form-label">
+                    Role
+                  </label>
+                  <select
+                    className="form-select"
+                    id="role"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                  >
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+                <div className="mb-3 text-center">
+                  <button type="submit" className="btn btn-primary">
+                    Register
+                  </button>
+                </div>
+                {isError && (
+                  <div className="alert alert-danger" role="alert">
+                    {error}
+                  </div>
+                )}
+              </form>
+              <div className="text-center">
+                <Link to={"/login"} className="text-decoration-none">
+                  Already Registered? Login Here
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    </div>
   );
 };
-
-// done p
 
 export default Register;

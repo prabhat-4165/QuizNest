@@ -10,9 +10,8 @@ const Result = require("../Models/Result.js");
 const { ObjectId } = mongooseTypes;
 
 
- const addQuiz = async (req, res) => {
+const addQuiz = async (req, res) => {
   try {
-    // console.log(req.body);
     const {
       name,
       description,
@@ -36,18 +35,13 @@ const { ObjectId } = mongooseTypes;
     ) {
       return res.json({ status: 422, message: "Something is missing" });
     }
-    // console.log('created by...',createdBy)
-    //  console.log('questions received...',questions);
     const questionIds = await Promise.all(
       questions.map(async (question, i) => {
-        // console.log('question ',i+1, question);
         const newQuestion = new Question(question);
-        // console.log('here is new question', newQuestion)
         const savedQuestion = await newQuestion.save();
         return savedQuestion._id;
       })
     );
-    // console.log('questions ids ...',questionIds)
 
     const quiz = new Quiz({
       name,
@@ -73,8 +67,6 @@ const { ObjectId } = mongooseTypes;
         return res.json({ status: 422, message: "Admin not found" });
       }
 
-      // console.log(admin);
-
       admin.createdQuizes.push(quizId);
       // Save the updated admin document
       await admin.save();
@@ -96,13 +88,10 @@ const { ObjectId } = mongooseTypes;
   }
 };
 
- const getQuiz = async (req, res) => {
-  // console.log('here i am');
+const getQuiz = async (req, res) => {
   try {
     const quizId = req.body.quizId;
-    // console.log(req.body,req.body.quizId)
     const isValidQuiz = await Quiz.findById(quizId);
-    // console.log(isValidQuiz);
     if (!isValidQuiz) {
       console.log("here");
       return res.json({ status: 422, message: "Invalid QuizId" });
@@ -126,8 +115,7 @@ const { ObjectId } = mongooseTypes;
   }
 };
 
- const getQuizzes = async (req, res) => {
-  // console.log("inside function...")
+const getQuizzes = async (req, res) => {
   try {
     const { quizIds } = req.body;
     console.log(quizIds);
@@ -149,7 +137,7 @@ const { ObjectId } = mongooseTypes;
   }
 };
 
- const deleteQuiz = async (req, res) => {
+const deleteQuiz = async (req, res) => {
   try {
     const { quizId } = req.body;
 
@@ -157,29 +145,22 @@ const { ObjectId } = mongooseTypes;
       return res.json({ status: 422, message: "QuizId is missing" });
     }
 
-    // console.log(quizId)
 
     const quiz = await Quiz.findById(quizId);
-
-    // console.log('finded quiz...',quiz.attemptedBy);
     if (!quiz) {
       return res.json({ status: 422, message: "Cannot find Quiz" });
     }
     const response = await Quiz.deleteOne({ _id: quizId });
-    // console.log('response...',response)
     if (response.deletedCount === 0) {
       return res.json({ status: 422, message: "Cannot find Quiz" });
     }
 
     const questionIds = quiz.questions.map((question) => question._id);
-    // console.log('questions',questionIds);
     await Question.deleteMany({ _id: { $in: questionIds } });
 
     const admin = await Admin.findOne({
       _id: quiz.createdBy,
     });
-    // const users = await User.findOne({_id: quiz.attemptedBy[0]})
-    // console.log("users...",users);
     await Admin.updateOne(
       { _id: admin._id },
       { $pull: { createdQuizes: { _id: new ObjectId(quizId) } } }
@@ -190,9 +171,9 @@ const { ObjectId } = mongooseTypes;
       { $pull: { attemptedQuizes: { quiz: quizId } } }
     );
 
-    const result = await Result.deleteOne({quiz: quizId});
-    if(result.deletedCount === 0){
-      return res.json({status: 422, message: "Result cannot be deleted"});
+    const result = await Result.deleteOne({ quiz: quizId });
+    if (result.deletedCount === 0) {
+      return res.json({ status: 422, message: "Result cannot be deleted" });
     }
 
     return res.json({ status: 201, message: "Deleted Successfully" });
@@ -202,11 +183,9 @@ const { ObjectId } = mongooseTypes;
   }
 };
 
- const calculateScores = async (req, res) => {
+const calculateScores = async (req, res) => {
   try {
     const { quizId } = req.body;
-
-    // Fetch quiz information with populated data
     const quiz = await Quiz.findById(quizId).populate({
       path: "attemptedBy",
       populate: {
@@ -222,8 +201,6 @@ const { ObjectId } = mongooseTypes;
     if (!quiz) {
       return res.status(404).json({ message: "Quiz not found" });
     }
-
-    // Calculate scores for each user
     await Promise.all(
       quiz.attemptedBy.map(async (user) => {
         let score = 0;
@@ -267,7 +244,7 @@ const { ObjectId } = mongooseTypes;
     );
 
     return res
-      .json({ status: 201,message: "Scores calculated and updated successfully" });
+      .json({ status: 201, message: "Scores calculated and updated successfully" });
   } catch (error) {
     console.error("Error calculating scores:", error);
     return res.status(500).json({ message: "Internal Server Error" });

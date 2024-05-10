@@ -11,5 +11,4 @@ const Footer = () => {
   );
 };
 
-// done p
 export default Footer;

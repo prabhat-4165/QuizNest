@@ -1,16 +1,12 @@
-import React ,{useState,useEffect}from 'react'
+import React, { useState, useEffect } from 'react'
 import { useLocation, useSearchParams } from 'react-router-dom';
-// import Header from '../LandingPage/Header';
-// import BannerBackground from "../R"
 import "../../Styles/LeaderBoard.css";
 import axios from 'axios';
-
-
 
 const LeaderBoard = () => {
   const location = useLocation();
   const { quiz } = location.state || {};
-  console.log('Quiz',quiz);
+  console.log('Quiz', quiz);
   const [leaderboardData, setLeaderboardData] = useState([]);
 
   useEffect(() => {
@@ -35,13 +31,11 @@ const LeaderBoard = () => {
   };
 
   return (
-    <div style={{background: "linear-gradient(rgba(0,0,50,0.7),rgba(0,0,50,0.7))", color: "#fff", minHeight: "89vh"}} >
-      {/* <Header /> */}
-      <h2 className="leader-h2" style={{color:"#fff"}}>LeaderBoard </h2>
+    <div style={{ background: "linear-gradient(rgba(0,0,50,0.7),rgba(0,0,50,0.7))", color: "#fff", minHeight: "89vh" }} >
+      <h2 className="leader-h2" style={{ color: "#fff" }}>LeaderBoard </h2>
       {quiz ? (
         <div>
           <div className="home-bannerImage-container">
-            {/* <img src={BannerBackground} alt="" /> */}
           </div>
           <table className="leader-table">
             <thead>

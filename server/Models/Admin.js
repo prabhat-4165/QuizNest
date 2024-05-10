@@ -1,11 +1,6 @@
 const mongoose = require("mongoose");
-
 const Quiz = require('./Quiz.js');
-
 const { Schema } = require("mongoose");
-
-
-
 
 const adminSchema = mongoose.Schema({
   name: {

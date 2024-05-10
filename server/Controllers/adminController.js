@@ -2,12 +2,9 @@ const User = require('../Models/User.js')
 const Admin = require('../Models/Admin.js')
 const Quiz = require('../Models/Quiz.js')
 const Result = require('../Models/Result.js')
-const  mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-// import Result from "../model/Result.js";
-// const mongoose = require("mongoose");
-
- const addAdmin = async (req, res) => {
+const addAdmin = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
@@ -38,7 +35,7 @@ const  mongoose = require('mongoose');
   }
 };
 
- const getAdmin = async (req, res) => {
+const getAdmin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -47,7 +44,6 @@ const  mongoose = require('mongoose');
     }
 
     const admin = await Admin.findOne({ email: email });
-    // console.log(admin);
 
     if (!admin) {
       return res.status(200).json({ message: "Admin does not exist" });
@@ -60,7 +56,6 @@ const  mongoose = require('mongoose');
 
     const quizHistory = await Quiz.find({ createdBy: admin._id });
     const quizIds = quizHistory.map((quiz) => quiz._id);
-    // console.log(quizIds);
     return res.status(201).json({
       adminId: admin._id,
       adminName: admin.name,
@@ -75,14 +70,14 @@ const  mongoose = require('mongoose');
 
 
 
-  const publishResult = async (req, res) => {
-   try {
-     const { adminId, userIds, quizId } = req.body;
+const publishResult = async (req, res) => {
+  try {
+    const { adminId, userIds, quizId } = req.body;
     const admin = await Admin.findById(adminId);
     if (!admin) {
       return res.json({ status: 422, message: "Admin not found" });
     }
-    console.log(adminId,userIds,quizId);
+    console.log(adminId, userIds, quizId);
     const quizInAdmin = admin.createdQuizes.find(
       (q) => q._id.toString() === quizId
     );
@@ -108,7 +103,6 @@ const  mongoose = require('mongoose');
         if (!isAllowedToViewResult) {
           return;
         }
-        // Fetch user details
         const user = await User.findById(userId);
         if (!user) {
           console.warn(`User with ID ${userId} not found`);
@@ -145,7 +139,7 @@ const  mongoose = require('mongoose');
   }
 };
 
- const adminUserHistory = async (req, res) => {
+const adminUserHistory = async (req, res) => {
   try {
     const { quizId } = req.body;
 
@@ -173,7 +167,7 @@ const  mongoose = require('mongoose');
   }
 };
 
- const checkResultPublished = async (req, res) => {
+const checkResultPublished = async (req, res) => {
   try {
     const { adminId, quizId } = req.body;
 
@@ -197,12 +191,12 @@ const  mongoose = require('mongoose');
 
     return res.json({ status: 200, isresultPublished: isResultPublished });
   } catch (error) {
-    console.log("Some error occured while checking result published",error);
+    console.log("Some error occured while checking result published", error);
   }
 };
 
- const getLeaderBoard = async (req,res) => {
-  try{
+const getLeaderBoard = async (req, res) => {
+  try {
     const { quizId } = req.body;
 
     // Check if the quiz exists
@@ -221,18 +215,18 @@ const  mongoose = require('mongoose');
     // Prepare leaderboard data
     const leaderboard = results.users
       .sort((a, b) => b.score - a.score);
-    return res.json({status: 201,leaderboard})
-  }catch(error){
-    console.log('Some Error Occured during getting the leaderBoard',error)
+    return res.json({ status: 201, leaderboard })
+  } catch (error) {
+    console.log('Some Error Occured during getting the leaderBoard', error)
   }
 }
 
 
 module.exports = {
-  addAdmin, 
-  getAdmin, 
-  publishResult, 
-  adminUserHistory, 
-  getLeaderBoard, 
+  addAdmin,
+  getAdmin,
+  publishResult,
+  adminUserHistory,
+  getLeaderBoard,
   checkResultPublished
 };
