@@ -195,31 +195,6 @@ const checkResultPublished = async (req, res) => {
   }
 };
 
-const getLeaderBoard = async (req, res) => {
-  try {
-    const { quizId } = req.body;
-
-    // Check if the quiz exists
-    const quizExists = await Result.findOne({ quiz: quizId });
-    if (!quizExists) {
-      return res.json({ status: 404, message: 'Quiz not found in results' });
-    }
-
-    // Fetch results for the specific quiz
-    const results = await Result.findOne({ quiz: quizId }).populate('users.userId');
-    if (!results) {
-      return res.json({ status: 404, message: 'No results found for the quiz' });
-    }
-
-    console.log(results)
-    // Prepare leaderboard data
-    const leaderboard = results.users
-      .sort((a, b) => b.score - a.score);
-    return res.json({ status: 201, leaderboard })
-  } catch (error) {
-    console.log('Some Error Occured during getting the leaderBoard', error)
-  }
-}
 
 
 module.exports = {
@@ -227,6 +202,5 @@ module.exports = {
   getAdmin,
   publishResult,
   adminUserHistory,
-  getLeaderBoard,
   checkResultPublished
 };

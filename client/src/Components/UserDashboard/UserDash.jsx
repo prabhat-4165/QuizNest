@@ -12,6 +12,7 @@ const Quizcode = () => {
 
   const { loginId } = useContext(LoginContext);
   console.log("bla bla", loginId);
+  
   useEffect(() => {
     if (loginId && loginId.quizIds) {
       getHistory();
@@ -37,12 +38,12 @@ const Quizcode = () => {
 
   const startQuiz = async () => {
 
-    // Check if the user has already taken the quiz
-    const hasTakenQuiz = quizDetail.some(detail => detail.quizId === quizCode);
-    if (hasTakenQuiz) {
-      window.alert("You have already taken this quiz.");
-      return;
-    }
+    //Check if the user has already taken the quiz
+    // const hasTakenQuiz = quizDetail.some(detail => detail.quizId === quizCode);
+    // if (hasTakenQuiz) {
+    //   window.alert("You have already taken this quiz.");
+    //   return;
+    // }
 
     // If the user hasn't taken the quiz, proceed to start it
     const response = await axios.post("http://localhost:8000/get-quiz", {

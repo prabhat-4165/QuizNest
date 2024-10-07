@@ -45,8 +45,8 @@ function App() {
         <Route path='/submitted' element={<Submitted />}></Route>
         <Route path='/result' element={<Result />}></Route>
         <Route path='/leaderboard' element={<Leaderboard />}></Route>
-        <Route path='/about' element={<About />}></Route>
-        <Route path='/contact' element={<Contact />}></Route>
+        {/* <Route path='/about' element={<About />}></Route>
+        <Route path='/contact' element={<Contact />}></Route> */}
       </Routes>
     </Router>
     </LoginContextProvider>

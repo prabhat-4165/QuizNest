@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const Result = require("../Models/Result.js");
 
 
+
 const addUser = async (req, res) => {
   try {
     const { name, email, password, attemptedQuizes } = req.body;
@@ -35,7 +36,7 @@ const addUser = async (req, res) => {
   }
 };
 
-const getUser = async (req, res) => {
+const getUser = async (req, res) => { // login function 
   try {
     const { email, password } = req.body;
 
@@ -185,10 +186,39 @@ const getResult = async (req, res) => {
   }
 }
 
+const getLeaderBoard = async (req, res) => {
+  try {
+    const { quizId } = req.body;
+
+    // Check if the quiz exists
+    const quizExists = await Result.findOne({ quiz: quizId });
+    if (!quizExists) {
+      return res.json({ status: 404, message: 'Quiz not found in results' });
+    }
+
+    // Fetch results for the specific quiz
+    const results = await Result.findOne({ quiz: quizId }).populate('users.userId');
+    if (!results) {
+      return res.json({ status: 404, message: 'No results found for the quiz' });
+    }
+
+    console.log(results)
+    // Prepare leaderboard data
+    const leaderboard = results.users
+      .sort((a, b) => b.score - a.score);
+    return res.json({ status: 201, leaderboard })
+  } catch (error) {
+    console.log('Some Error Occured during getting the leaderBoard', error)
+  }
+}
+
+
+//user
 module.exports = {
   addUser,
   getUser,
   saveUserResponse,
   getUserHistory,
+  getLeaderBoard,
   getResult
 };

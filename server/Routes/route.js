@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { addUser, getUser, getResult, getUserHistory, saveUserResponse } = require('../Controllers/userController.js');
-const { addAdmin, getAdmin, publishResult, adminUserHistory, checkResultPublished, getLeaderBoard} = require('../Controllers/adminController.js');
+const { addUser, getUser, getResult, getUserHistory, saveUserResponse,getLeaderBoard } = require('../Controllers/userController.js');
+const { addAdmin, getAdmin, publishResult, adminUserHistory, checkResultPublished, } = require('../Controllers/adminController.js');
 const { getQuiz, addQuiz, calculateScores, deleteQuiz, getQuizzes } = require('../Controllers/quizController.js');
 
 router.get('/', (req, res) => {

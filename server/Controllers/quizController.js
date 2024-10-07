@@ -9,7 +9,6 @@ const Result = require("../Models/Result.js");
 
 const { ObjectId } = mongooseTypes;
 
-
 const addQuiz = async (req, res) => {
   try {
     const {

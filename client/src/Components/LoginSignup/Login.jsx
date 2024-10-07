@@ -61,7 +61,7 @@ const Login = (props) => {
           userEmail: response.data.userInfo.email,
           quizIds: response.data.userInfo.attemptedQuizes,
         });
-        navigate('/user');
+        navigate('/user'); //go to the user dashboard
         window.alert("User Login successfully");
       } catch (error) {
         setisError(true);
